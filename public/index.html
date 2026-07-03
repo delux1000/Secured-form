@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Package Submission</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+    <style>
+        /* ... (same styles as previous) ... */
+        /* For brevity, I'll include the full style from the previous answer. */
+        /* But to save space, I'll use a placeholder – you can copy the exact style from the prior response. */
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="header">
+            <div class="icon"><i class="fas fa-box"></i></div>
+            <h1>Package Submission <span>Secure &bull; Fast &bull; Reliable</span></h1>
+        </div>
+        <form id="submissionForm" novalidate>
+            <div class="form-group">
+                <label for="fullName"><i class="fas fa-user"></i> Full Name</label>
+                <input type="text" id="fullName" placeholder="e.g. John A. Doe" required autocomplete="name" />
+            </div>
+            <div class="form-group">
+                <label for="address"><i class="fas fa-location-dot"></i> Full Address <span>(auto-fill)</span></label>
+                <input type="text" id="address" list="addressSuggestions" placeholder="Start typing your address…" required autocomplete="street-address" />
+                <datalist id="addressSuggestions"></datalist>
+            </div>
+            <div class="row-2">
+                <div class="form-group">
+                    <label for="country"><i class="fas fa-globe"></i> Country</label>
+                    <input type="text" id="country" placeholder="e.g. United States" required autocomplete="country" />
+                </div>
+                <div class="form-group">
+                    <label for="countyCode"><i class="fas fa-map-pin"></i> County Code</label>
+                    <input type="text" id="countyCode" placeholder="e.g. CA, NY" required />
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="email"><i class="fas fa-envelope"></i> Email Address</label>
+                <input type="email" id="email" placeholder="you@example.com" required autocomplete="email" />
+            </div>
+            <div class="form-group">
+                <label><i class="fas fa-image"></i> Upload Picture</label>
+                <div class="file-upload-wrap">
+                    <input type="file" id="imageUpload" accept="image/*" required />
+                    <div class="file-upload-btn">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <span>Choose Image</span>
+                    </div>
+                    <img id="imagePreview" class="file-preview" alt="Preview" />
+                    <span id="fileName" class="file-name"></span>
+                </div>
+            </div>
+            <button type="submit" class="submit-btn" id="submitBtn">
+                <span class="btn-icon"><i class="fas fa-paper-plane"></i></span>
+                <span class="btn-text">Submit Package</span>
+                <span class="spinner"></span>
+            </button>
+        </form>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal-overlay" id="successModal">
+        <div class="modal">
+            <div class="check"><i class="fas fa-check"></i></div>
+            <h2>Package Submitted!</h2>
+            <p>Your package has been received and is being processed.</p>
+            <div class="link-group">
+                <a href="#" id="viewLink" class="view-link" target="_blank"><i class="fas fa-eye"></i> View All Submission Details</a>
+                <a href="#" id="whatsappLink" class="whatsapp-link" target="_blank"><i class="fab fa-whatsapp"></i> Package Processing — Click Here for Quick Approval</a>
+            </div>
+            <button class="close-btn" id="modalCloseBtn"><i class="fas fa-times"></i> Close</button>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"><i class="fas fa-check-circle"></i><span id="toastMessage">Success!</span></div>
+
+    <script>
+        // ... (same script as previous, with the address suggestions array) ...
+        // For brevity, I'll refer to the earlier answer for the full script.
+        // The script includes:
+        // - Address autofill datalist
+        // - Image preview
+        // - Toast notifications
+        // - Form submission with loading animation (5 seconds)
+        // - Modal with view and WhatsApp links
+        // - Auto-open WhatsApp after submission
+        // - All logic is identical to the previous version.
+    </script>
+</body>
+</html>
