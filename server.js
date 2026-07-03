@@ -11,11 +11,13 @@ const PORT = process.env.PORT || 3000;
 // ── Middleware ──
 app.use(cors());
 app.use(bodyParser.json({ limit: '10mb' }));
-app.use(express.static(path.join(__dirname))); // serve static files
 
-// ── JSONBin Configuration (hardcoded) ──
-const JSONBIN_BIN_ID = '6a47e235da38895dfe299a10';        // Replace with your bin ID
-const JSONBIN_API_KEY = '$2a$10$yAgKMt6GKitAdLZbY864Auu79zK7L6gKzLXAL7UPEZ/fRhWJX3/tW';      // Replace with your master key
+// ── Serve static files from "public" directory ──
+app.use(express.static(path.join(__dirname, 'public')));
+
+// ── JSONBin Configuration (hardcoded with provided credentials) ──
+const JSONBIN_BIN_ID = '6a47e235da38895dfe299a10';
+const JSONBIN_API_KEY = '$2a$10$yAgKMt6GKitAdLZbY864Auu79zK7L6gKzLXAL7UPEZ/fRhWJX3/tW';
 const JSONBIN_URL = `https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`;
 
 // ── ntfy Configuration ──
@@ -113,9 +115,12 @@ app.get('/api/submission/:id', async (req, res) => {
   }
 });
 
-// ── Serve index.html as default ──
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
+// ── Catch-all: serve index.html for any unknown routes (so that direct navigation to /view.html etc. still works) ──
+app.get('*', (req, res) => {
+  // If the request is for a static file that doesn't exist, serve index.html
+  // However, because we used express.static first, it will handle existing files.
+  // This catch-all will only be hit if no static file matches.
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 // ── Start server ──
@@ -123,4 +128,5 @@ app.listen(PORT, () => {
   console.log(`🚀 Server running on http://localhost:${PORT}`);
   console.log(`📦 JSONBin Bin ID: ${JSONBIN_BIN_ID}`);
   console.log(`📢 ntfy topic: ${NTFY_TOPIC}`);
+  console.log(`📁 Serving static files from: ${path.join(__dirname, 'public')}`);
 });
