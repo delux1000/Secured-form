@@ -12,49 +12,57 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(bodyParser.json({ limit: '10mb' }));
 
-// ─── Serve static files from "public" ─────────────────────────
+// ─── Serve static files ──────────────────────────────────────
 app.use(express.static(path.join(__dirname, 'public')));
 
-// ─── JSONBin Configuration ─────────────────────────────────────
+// ─── JSONBin Configuration ──────────────────────────────────
 const JSONBIN_BIN_ID = '6a47e235da38895dfe299a10';
 const JSONBIN_API_KEY = '$2a$10$yAgKMt6GKitAdLZbY864Auu79zK7L6gKzLXAL7UPEZ/fRhWJX3/tW';
 const JSONBIN_GET_URL = `https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}/latest`;
 const JSONBIN_PUT_URL = `https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`;
 
-// ─── ntfy Notification ──────────────────────────────────────────
+// ─── ntfy ────────────────────────────────────────────────────
 const NTFY_TOPIC = 'p_reg';
 const NTFY_URL = `https://ntfy.sh/${NTFY_TOPIC}`;
 
-// ─── Helper: Read submissions from JSONBin ─────────────────────
+// ─── Helper: Read submissions ──────────────────────────────
 async function getSubmissions() {
   try {
     const response = await axios.get(JSONBIN_GET_URL, {
       headers: { 'X-Master-Key': JSONBIN_API_KEY }
     });
-    // The record should contain a 'submissions' array
     const data = response.data.record;
     if (!data || !Array.isArray(data.submissions)) {
-      // If the bin exists but doesn't have the expected structure, initialize it
+      console.warn('⚠️ JSONBin record missing submissions array. Initializing.');
       await saveSubmissions([]);
       return [];
     }
     return data.submissions;
   } catch (error) {
-    // If the bin doesn't exist (404) or other errors, we can initialize
+    // If bin doesn't exist (404) or other errors, try to create a new one
     if (error.response && error.response.status === 404) {
       console.warn('⚠️ JSONBin bin not found. Creating a new one with empty submissions.');
-      await saveSubmissions([]);
-      return [];
+      try {
+        await saveSubmissions([]);
+        return [];
+      } catch (createError) {
+        console.error('❌ Failed to create bin:', createError.message);
+        throw new Error('Could not initialize storage. Check bin ID and API key.');
+      }
     }
     console.error('❌ Error reading from JSONBin:', error.message);
-    throw new Error('Failed to read submissions from storage.');
+    if (error.response) {
+      console.error('   Status:', error.response.status);
+      console.error('   Data:', error.response.data);
+    }
+    throw new Error(`Failed to read from storage: ${error.message}`);
   }
 }
 
-// ─── Helper: Write submissions to JSONBin ─────────────────────
+// ─── Helper: Write submissions ──────────────────────────────
 async function saveSubmissions(submissions) {
   try {
-    await axios.put(
+    const response = await axios.put(
       JSONBIN_PUT_URL,
       { submissions },
       {
@@ -64,27 +72,42 @@ async function saveSubmissions(submissions) {
         }
       }
     );
+    console.log('✅ JSONBin write successful. Status:', response.status);
   } catch (error) {
-    console.error('❌ Error writing to JSONBin:', error.message);
-    throw new Error('Failed to save submissions to storage.');
+    console.error('❌ Error writing to JSONBin:');
+    if (error.response) {
+      console.error('   Status:', error.response.status);
+      console.error('   Data:', error.response.data);
+      console.error('   Headers:', error.response.headers);
+    } else {
+      console.error('   Message:', error.message);
+    }
+    throw new Error(`Failed to save to storage: ${error.response?.data?.message || error.message}`);
   }
 }
 
-// ─── API Endpoints ──────────────────────────────────────────────
+// ─── API Endpoints ──────────────────────────────────────────
 
-// 1. Submit a new package
+// Test endpoint to verify JSONBin connectivity
+app.get('/api/test', async (req, res) => {
+  try {
+    await getSubmissions();
+    res.json({ success: true, message: 'JSONBin connection works!' });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
 app.post('/api/submit', async (req, res) => {
   try {
     const { fullName, address, country, email, countyCode, image } = req.body;
 
-    // Validate required fields
     if (!fullName || !address || !country || !email || !countyCode || !image) {
       return res.status(400).json({
         error: 'All fields are required: fullName, address, country, email, countyCode, image.'
       });
     }
 
-    // Read current submissions
     const submissions = await getSubmissions();
     const id = uuidv4();
     const newEntry = {
@@ -94,7 +117,7 @@ app.post('/api/submit', async (req, res) => {
       country: country.trim(),
       email: email.trim().toLowerCase(),
       countyCode: countyCode.trim().toUpperCase(),
-      image, // base64 string (without data:image/... prefix)
+      image,
       timestamp: new Date().toISOString(),
       status: 'pending'
     };
@@ -102,7 +125,7 @@ app.post('/api/submit', async (req, res) => {
     submissions.push(newEntry);
     await saveSubmissions(submissions);
 
-    // ── Send ntfy notification (asynchronous, don't wait) ──
+    // Send ntfy notification (don't wait for response)
     const viewUrl = `http://localhost:${PORT}/view.html?id=${id}`;
     const adminUrl = `http://localhost:${PORT}/admin.html`;
     const message = `📦 New submission from ${fullName}\nView: ${viewUrl}\nAdmin: ${adminUrl}`;
@@ -117,40 +140,32 @@ app.post('/api/submit', async (req, res) => {
   }
 });
 
-// 2. Get all submissions (for admin)
 app.get('/api/submissions', async (req, res) => {
   try {
     const submissions = await getSubmissions();
     res.json(submissions);
   } catch (error) {
-    console.error('❌ Fetch all error:', error);
-    res.status(500).json({ error: error.message || 'Failed to fetch submissions' });
+    res.status(500).json({ error: error.message });
   }
 });
 
-// 3. Get a single submission by ID (for view page)
 app.get('/api/submission/:id', async (req, res) => {
   try {
     const submissions = await getSubmissions();
     const entry = submissions.find(s => s.id === req.params.id);
-    if (!entry) {
-      return res.status(404).json({ error: 'Submission not found' });
-    }
+    if (!entry) return res.status(404).json({ error: 'Not found' });
     res.json(entry);
   } catch (error) {
-    console.error('❌ Fetch one error:', error);
-    res.status(500).json({ error: error.message || 'Failed to fetch submission' });
+    res.status(500).json({ error: error.message });
   }
 });
 
-// ─── Catch‑all: serve index.html for any unknown routes ─────────
-// This ensures that refreshing /view.html or /admin.html works
-// because express.static handles existing files first.
+// ─── Catch‑all ──────────────────────────────────────────────
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// ─── Start Server ──────────────────────────────────────────────
+// ─── Start ──────────────────────────────────────────────────
 app.listen(PORT, () => {
   console.log(`🚀 Server running on http://localhost:${PORT}`);
   console.log(`📦 JSONBin Bin ID: ${JSONBIN_BIN_ID}`);
