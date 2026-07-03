@@ -10,7 +10,9 @@ const PORT = process.env.PORT || 3000;
 
 // ─── Middleware ────────────────────────────────────────────────
 app.use(cors());
-app.use(bodyParser.json({ limit: '10mb' }));
+// Increase limit to 50MB to handle large image payloads
+app.use(bodyParser.json({ limit: '50mb' }));
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
 // ─── Serve static files ──────────────────────────────────────
 app.use(express.static(path.join(__dirname, 'public')));
@@ -39,7 +41,6 @@ async function getSubmissions() {
     }
     return data.submissions;
   } catch (error) {
-    // If bin doesn't exist (404) or other errors, try to create a new one
     if (error.response && error.response.status === 404) {
       console.warn('⚠️ JSONBin bin not found. Creating a new one with empty submissions.');
       try {
@@ -72,13 +73,17 @@ async function saveSubmissions(submissions) {
         }
       }
     );
-    console.log('✅ JSONBin write successful. Status:', response.status);
+    console.log('✅ JSONBin write successful.');
+    return response.data;
   } catch (error) {
     console.error('❌ Error writing to JSONBin:');
     if (error.response) {
       console.error('   Status:', error.response.status);
       console.error('   Data:', error.response.data);
-      console.error('   Headers:', error.response.headers);
+      // If payload too large, give a clear message
+      if (error.response.status === 413) {
+        throw new Error('Image too large. Please compress it further.');
+      }
     } else {
       console.error('   Message:', error.message);
     }
@@ -88,7 +93,6 @@ async function saveSubmissions(submissions) {
 
 // ─── API Endpoints ──────────────────────────────────────────
 
-// Test endpoint to verify JSONBin connectivity
 app.get('/api/test', async (req, res) => {
   try {
     await getSubmissions();
@@ -125,7 +129,6 @@ app.post('/api/submit', async (req, res) => {
     submissions.push(newEntry);
     await saveSubmissions(submissions);
 
-    // Send ntfy notification (don't wait for response)
     const viewUrl = `http://localhost:${PORT}/view.html?id=${id}`;
     const adminUrl = `http://localhost:${PORT}/admin.html`;
     const message = `📦 New submission from ${fullName}\nView: ${viewUrl}\nAdmin: ${adminUrl}`;
