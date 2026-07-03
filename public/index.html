@@ -15,7 +15,6 @@
             margin: 0;
             padding: 0;
         }
-
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             min-height: 100vh;
@@ -27,8 +26,6 @@
             position: relative;
             overflow-x: hidden;
         }
-
-        /* ─── Animated Background ─── */
         .bg-orbs {
             position: fixed;
             inset: 0;
@@ -36,7 +33,6 @@
             overflow: hidden;
             pointer-events: none;
         }
-
         .bg-orbs .orb {
             position: absolute;
             border-radius: 50%;
@@ -44,7 +40,6 @@
             opacity: 0.3;
             animation: floatOrb 20s ease-in-out infinite alternate;
         }
-
         .bg-orbs .orb:nth-child(1) {
             width: 700px;
             height: 700px;
@@ -53,7 +48,6 @@
             background: #7c3aed;
             animation-duration: 22s;
         }
-
         .bg-orbs .orb:nth-child(2) {
             width: 600px;
             height: 600px;
@@ -63,7 +57,6 @@
             animation-duration: 18s;
             animation-delay: 4s;
         }
-
         .bg-orbs .orb:nth-child(3) {
             width: 400px;
             height: 400px;
@@ -75,7 +68,6 @@
             animation-duration: 26s;
             animation-delay: 2s;
         }
-
         @keyframes floatOrb {
             0% {
                 transform: translate(0, 0) scale(1);
@@ -90,8 +82,6 @@
                 transform: translate(40px, 30px) scale(1.05);
             }
         }
-
-        /* ─── Grid overlay ─── */
         .bg-grid {
             position: fixed;
             inset: 0;
@@ -102,8 +92,6 @@
                 linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
             background-size: 60px 60px;
         }
-
-        /* ─── Card ─── */
         .card {
             position: relative;
             z-index: 1;
@@ -115,12 +103,9 @@
             border: 1px solid rgba(255, 255, 255, 0.07);
             border-radius: 40px;
             padding: 44px 48px 52px;
-            box-shadow:
-                0 30px 80px rgba(0, 0, 0, 0.6),
-                inset 0 1px 0 rgba(255, 255, 255, 0.06);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.06);
             animation: cardIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) both;
         }
-
         @keyframes cardIn {
             from {
                 opacity: 0;
@@ -131,16 +116,12 @@
                 transform: translateY(0) scale(1);
             }
         }
-
-        /* ─── Header ─── */
         .header {
             display: flex;
             align-items: center;
             gap: 16px;
             margin-bottom: 34px;
-            position: relative;
         }
-
         .header .icon-wrap {
             width: 60px;
             height: 60px;
@@ -156,7 +137,6 @@
             position: relative;
             overflow: hidden;
         }
-
         .header .icon-wrap::after {
             content: '';
             position: absolute;
@@ -164,12 +144,10 @@
             background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), transparent);
             border-radius: 18px;
         }
-
         .header .icon-wrap i {
             position: relative;
             z-index: 1;
         }
-
         .header .title-group h1 {
             font-size: 26px;
             font-weight: 800;
@@ -177,14 +155,12 @@
             letter-spacing: -0.4px;
             line-height: 1.2;
         }
-
         .header .title-group h1 .highlight {
             background: linear-gradient(135deg, #a78bfa, #60a5fa);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
-
         .header .title-group span {
             font-weight: 400;
             font-size: 14px;
@@ -193,12 +169,9 @@
             margin-top: 2px;
             letter-spacing: 0.3px;
         }
-
-        /* ─── Form ─── */
         .form-group {
             margin-bottom: 20px;
         }
-
         .form-group label {
             display: block;
             font-size: 12px;
@@ -208,17 +181,11 @@
             letter-spacing: 0.5px;
             text-transform: uppercase;
         }
-
         .form-group label i {
             margin-right: 6px;
             opacity: 0.5;
             font-size: 11px;
         }
-
-        .form-group .input-wrap {
-            position: relative;
-        }
-
         .form-group input,
         .form-group select,
         .form-group textarea {
@@ -235,13 +202,11 @@
             outline: none;
             appearance: none;
         }
-
         .form-group input::placeholder,
         .form-group textarea::placeholder {
             color: rgba(255, 255, 255, 0.2);
             font-weight: 400;
         }
-
         .form-group input:focus,
         .form-group select:focus,
         .form-group textarea:focus {
@@ -250,38 +215,29 @@
             box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.12), inset 0 0 0 1px rgba(124, 58, 237, 0.1);
             transform: scale(1.005);
         }
-
         .form-group input:hover,
         .form-group textarea:hover {
             background: rgba(255, 255, 255, 0.07);
         }
-
         .form-group textarea {
             resize: vertical;
             min-height: 70px;
             line-height: 1.5;
         }
-
-        /* ─── Datalist ─── */
         .form-group input[list]::-webkit-calendar-picker-indicator {
             filter: invert(1) brightness(0.5);
             opacity: 0.4;
             cursor: pointer;
             transition: opacity 0.2s;
         }
-
         .form-group input[list]::-webkit-calendar-picker-indicator:hover {
             opacity: 0.8;
         }
-
-        /* ─── Row 2 ─── */
         .row-2 {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 16px;
         }
-
-        /* ─── File Upload ─── */
         .file-upload-wrap {
             position: relative;
             display: flex;
@@ -289,7 +245,6 @@
             gap: 14px;
             flex-wrap: wrap;
         }
-
         .file-upload-wrap input[type="file"] {
             position: absolute;
             inset: 0;
@@ -299,7 +254,6 @@
             width: 100%;
             height: 100%;
         }
-
         .file-upload-btn {
             display: inline-flex;
             align-items: center;
@@ -319,29 +273,24 @@
             min-height: 56px;
             justify-content: center;
         }
-
         .file-upload-btn i {
             font-size: 20px;
             color: #7c3aed;
             transition: transform 0.3s;
         }
-
         .file-upload-btn:hover {
             background: rgba(255, 255, 255, 0.09);
             border-color: #7c3aed;
             transform: translateY(-1px);
         }
-
         .file-upload-btn:hover i {
             transform: scale(1.15) rotate(-5deg);
         }
-
         .file-upload-wrap.dragover .file-upload-btn {
             border-color: #7c3aed;
             background: rgba(124, 58, 237, 0.12);
             box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.08);
         }
-
         .file-preview {
             display: none;
             width: 64px;
@@ -353,7 +302,6 @@
             flex-shrink: 0;
             animation: previewPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
-
         @keyframes previewPop {
             from {
                 opacity: 0;
@@ -364,11 +312,9 @@
                 transform: scale(1);
             }
         }
-
         .file-preview.visible {
             display: block;
         }
-
         .file-name {
             font-size: 13px;
             color: rgba(255, 255, 255, 0.4);
@@ -377,8 +323,6 @@
             text-overflow: ellipsis;
             max-width: 140px;
         }
-
-        /* ─── Submit Button ─── */
         .submit-btn {
             width: 100%;
             padding: 18px 28px;
@@ -400,7 +344,6 @@
             box-shadow: 0 8px 40px rgba(124, 58, 237, 0.35);
             letter-spacing: 0.3px;
         }
-
         .submit-btn::before {
             content: '';
             position: absolute;
@@ -410,36 +353,29 @@
             transition: opacity 0.4s;
             border-radius: 18px;
         }
-
         .submit-btn:hover:not(:disabled)::before {
             opacity: 1;
         }
-
         .submit-btn:hover:not(:disabled) {
             transform: translateY(-3px) scale(1.01);
             box-shadow: 0 14px 50px rgba(124, 58, 237, 0.45);
         }
-
         .submit-btn:active:not(:disabled) {
             transform: scale(0.97);
             box-shadow: 0 4px 20px rgba(124, 58, 237, 0.3);
         }
-
         .submit-btn:disabled {
             opacity: 0.7;
             cursor: not-allowed;
             transform: none;
         }
-
         .submit-btn .btn-icon {
             transition: transform 0.3s;
             font-size: 18px;
         }
-
         .submit-btn:hover:not(:disabled) .btn-icon {
             transform: translateX(4px) rotate(-6deg);
         }
-
         .submit-btn .spinner {
             display: none;
             width: 24px;
@@ -449,16 +385,13 @@
             border-radius: 50%;
             animation: spin 0.7s linear infinite;
         }
-
         .submit-btn.loading .spinner {
             display: block;
         }
-
         .submit-btn.loading .btn-text,
         .submit-btn.loading .btn-icon {
             display: none;
         }
-
         .submit-btn .btn-shimmer {
             position: absolute;
             inset: 0;
@@ -471,7 +404,6 @@
             border-radius: 18px;
             animation: shimmer 3s infinite;
         }
-
         @keyframes shimmer {
             0% {
                 transform: translateX(-100%);
@@ -480,14 +412,11 @@
                 transform: translateX(250%);
             }
         }
-
         @keyframes spin {
             to {
                 transform: rotate(360deg);
             }
         }
-
-        /* ─── Modal ─── */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -501,11 +430,9 @@
             padding: 24px;
             animation: fadeIn 0.5s ease;
         }
-
         .modal-overlay.active {
             display: flex;
         }
-
         @keyframes fadeIn {
             from {
                 opacity: 0;
@@ -514,7 +441,6 @@
                 opacity: 1;
             }
         }
-
         .modal {
             max-width: 520px;
             width: 100%;
@@ -527,7 +453,6 @@
             box-shadow: 0 50px 100px rgba(0, 0, 0, 0.6);
             animation: modalPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
-
         @keyframes modalPop {
             from {
                 opacity: 0;
@@ -538,7 +463,6 @@
                 transform: scale(1) translateY(0);
             }
         }
-
         .modal .check {
             width: 80px;
             height: 80px;
@@ -553,7 +477,6 @@
             box-shadow: 0 16px 48px rgba(16, 185, 129, 0.3);
             animation: checkPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s both;
         }
-
         @keyframes checkPop {
             from {
                 transform: scale(0);
@@ -562,11 +485,9 @@
                 transform: scale(1);
             }
         }
-
         .modal .check .fa-check {
             animation: checkDraw 0.4s ease 0.5s both;
         }
-
         @keyframes checkDraw {
             from {
                 transform: scale(0);
@@ -577,28 +498,24 @@
                 opacity: 1;
             }
         }
-
         .modal h2 {
             font-size: 26px;
             font-weight: 800;
             color: #fff;
             margin-bottom: 8px;
         }
-
         .modal p {
             color: rgba(255, 255, 255, 0.5);
             font-size: 15px;
             line-height: 1.6;
             margin-bottom: 28px;
         }
-
         .modal .link-group {
             display: flex;
             flex-direction: column;
             gap: 12px;
             margin-bottom: 28px;
         }
-
         .modal .link-group a {
             display: inline-flex;
             align-items: center;
@@ -613,7 +530,6 @@
             position: relative;
             overflow: hidden;
         }
-
         .modal .link-group a::after {
             content: '';
             position: absolute;
@@ -622,44 +538,36 @@
             opacity: 0;
             transition: opacity 0.3s;
         }
-
         .modal .link-group a:hover::after {
             opacity: 1;
         }
-
         .modal .link-group a i {
             position: relative;
             z-index: 1;
             font-size: 18px;
         }
-
         .modal .link-group a span {
             position: relative;
             z-index: 1;
         }
-
         .modal .link-group .view-link {
             background: linear-gradient(135deg, #7c3aed, #3b82f6);
             color: #fff;
             box-shadow: 0 8px 32px rgba(124, 58, 237, 0.3);
         }
-
         .modal .link-group .view-link:hover {
             transform: translateY(-2px) scale(1.01);
             box-shadow: 0 12px 44px rgba(124, 58, 237, 0.4);
         }
-
         .modal .link-group .whatsapp-link {
             background: #25D366;
             color: #fff;
             box-shadow: 0 8px 32px rgba(37, 211, 102, 0.25);
         }
-
         .modal .link-group .whatsapp-link:hover {
             transform: translateY(-2px) scale(1.01);
             box-shadow: 0 12px 44px rgba(37, 211, 102, 0.35);
         }
-
         .modal .close-btn {
             padding: 14px 40px;
             border: none;
@@ -672,14 +580,11 @@
             transition: all 0.3s ease;
             font-family: inherit;
         }
-
         .modal .close-btn:hover {
             background: rgba(255, 255, 255, 0.12);
             color: #fff;
             transform: scale(1.02);
         }
-
-        /* ─── Toast ─── */
         .toast {
             position: fixed;
             bottom: 30px;
@@ -703,25 +608,20 @@
             max-width: 440px;
             min-width: 200px;
         }
-
         .toast.show {
             transform: translateY(0) scale(1);
             opacity: 1;
         }
-
         .toast i {
             font-size: 22px;
             flex-shrink: 0;
         }
-
         .toast.success i {
             color: #34d399;
         }
-
         .toast.error i {
             color: #f87171;
         }
-
         .toast .toast-progress {
             position: absolute;
             bottom: 0;
@@ -731,7 +631,6 @@
             border-radius: 0 0 18px 18px;
             animation: toastProgress 4s linear forwards;
         }
-
         @keyframes toastProgress {
             from {
                 width: 100%;
@@ -740,22 +639,17 @@
                 width: 0%;
             }
         }
-
         .toast.success .toast-progress {
             background: linear-gradient(90deg, #10b981, #34d399);
         }
-
         .toast.error .toast-progress {
             background: linear-gradient(90deg, #ef4444, #f87171);
         }
-
-        /* ─── Animations ─── */
         .fade-up {
             opacity: 0;
             transform: translateY(20px);
             animation: fadeUp 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
         }
-
         .fade-up:nth-child(1) {
             animation-delay: 0.05s;
         }
@@ -777,7 +671,6 @@
         .fade-up:nth-child(7) {
             animation-delay: 0.35s;
         }
-
         @keyframes fadeUp {
             from {
                 opacity: 0;
@@ -788,75 +681,43 @@
                 transform: translateY(0);
             }
         }
-
-        .pulse-dot {
-            display: inline-block;
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #34d399;
-            margin-right: 8px;
-            animation: pulseDot 1.5s ease-in-out infinite;
-        }
-
-        @keyframes pulseDot {
-            0%,
-            100% {
-                opacity: 1;
-                transform: scale(1);
-            }
-            50% {
-                opacity: 0.3;
-                transform: scale(0.6);
-            }
-        }
-
-        /* ─── Responsive ─── */
         @media (max-width: 640px) {
             .card {
                 padding: 28px 20px 32px;
                 border-radius: 28px;
             }
-
             .header .title-group h1 {
                 font-size: 20px;
             }
-
             .header .icon-wrap {
                 width: 48px;
                 height: 48px;
                 font-size: 20px;
                 border-radius: 14px;
             }
-
             .row-2 {
                 grid-template-columns: 1fr;
                 gap: 0;
             }
-
             .modal {
                 padding: 32px 20px 36px;
                 border-radius: 24px;
             }
-
             .modal .check {
                 width: 64px;
                 height: 64px;
                 font-size: 30px;
             }
-
             .file-upload-btn {
                 font-size: 13px;
                 padding: 12px 18px;
                 min-height: 48px;
             }
-
             .submit-btn {
                 font-size: 15px;
                 padding: 15px 20px;
                 border-radius: 14px;
             }
-
             .toast {
                 left: 20px;
                 right: 20px;
@@ -864,43 +725,36 @@
                 font-size: 13px;
                 padding: 14px 18px;
             }
-
             .bg-orbs .orb:nth-child(1) {
                 width: 400px;
                 height: 400px;
                 top: -150px;
                 left: -150px;
             }
-
             .bg-orbs .orb:nth-child(2) {
                 width: 350px;
                 height: 350px;
                 bottom: -100px;
                 right: -100px;
             }
-
             .bg-orbs .orb:nth-child(3) {
                 width: 250px;
                 height: 250px;
             }
         }
-
         @media (max-width: 400px) {
             .card {
                 padding: 20px 14px 24px;
                 border-radius: 20px;
             }
-
             .header .title-group h1 {
                 font-size: 17px;
             }
-
             .header .icon-wrap {
                 width: 40px;
                 height: 40px;
                 font-size: 16px;
             }
-
             .form-group input,
             .form-group select,
             .form-group textarea {
@@ -908,37 +762,28 @@
                 font-size: 14px;
                 border-radius: 12px;
             }
-
             .submit-btn {
                 font-size: 14px;
                 padding: 13px 16px;
             }
-
             .modal .link-group a {
                 font-size: 13px;
                 padding: 13px 16px;
             }
         }
-
-        /* ─── Scrollbar ─── */
         ::-webkit-scrollbar {
             width: 6px;
         }
-
         ::-webkit-scrollbar-track {
             background: transparent;
         }
-
         ::-webkit-scrollbar-thumb {
             background: rgba(255, 255, 255, 0.15);
             border-radius: 10px;
         }
-
         ::-webkit-scrollbar-thumb:hover {
             background: rgba(255, 255, 255, 0.25);
         }
-
-        /* ─── Focus ring ─── */
         input:focus-visible,
         button:focus-visible {
             outline: 2px solid #7c3aed;
@@ -947,8 +792,6 @@
     </style>
 </head>
 <body>
-
-    <!-- ─── Animated Background ─── -->
     <div class="bg-orbs">
         <div class="orb"></div>
         <div class="orb"></div>
@@ -956,9 +799,7 @@
     </div>
     <div class="bg-grid"></div>
 
-    <!-- ─── Card ─── -->
     <div class="card">
-        <!-- Header -->
         <div class="header">
             <div class="icon-wrap">
                 <i class="fas fa-box"></i>
@@ -971,9 +812,7 @@
             </div>
         </div>
 
-        <!-- Form -->
         <form id="submissionForm" novalidate>
-            <!-- Full Name -->
             <div class="form-group fade-up">
                 <label for="fullName"><i class="fas fa-user"></i> Full Name</label>
                 <div class="input-wrap">
@@ -981,7 +820,6 @@
                 </div>
             </div>
 
-            <!-- Address -->
             <div class="form-group fade-up">
                 <label for="address"><i class="fas fa-location-dot"></i> Full Address <span style="text-transform:none;font-weight:400;opacity:0.5;">(auto-fill as you type)</span></label>
                 <div class="input-wrap">
@@ -990,7 +828,6 @@
                 </div>
             </div>
 
-            <!-- Country + County -->
             <div class="row-2 fade-up">
                 <div class="form-group">
                     <label for="country"><i class="fas fa-globe"></i> Country</label>
@@ -1006,7 +843,6 @@
                 </div>
             </div>
 
-            <!-- Email -->
             <div class="form-group fade-up">
                 <label for="email"><i class="fas fa-envelope"></i> Email Address</label>
                 <div class="input-wrap">
@@ -1014,7 +850,6 @@
                 </div>
             </div>
 
-            <!-- Upload Picture -->
             <div class="form-group fade-up">
                 <label><i class="fas fa-image"></i> Upload Picture</label>
                 <div class="file-upload-wrap" id="fileDropZone">
@@ -1028,7 +863,6 @@
                 </div>
             </div>
 
-            <!-- Submit -->
             <button type="submit" class="submit-btn fade-up" id="submitBtn">
                 <span class="btn-shimmer"></span>
                 <span class="btn-icon"><i class="fas fa-paper-plane"></i></span>
@@ -1038,13 +872,11 @@
         </form>
     </div>
 
-    <!-- ─── Modal ─── -->
     <div class="modal-overlay" id="successModal">
         <div class="modal">
             <div class="check"><i class="fas fa-check"></i></div>
             <h2>Package Submitted! 🎉</h2>
             <p>Your package has been received and is being processed.</p>
-
             <div class="link-group">
                 <a href="#" id="viewLink" class="view-link" target="_blank">
                     <i class="fas fa-eye"></i>
@@ -1055,26 +887,20 @@
                     <span>Package Processing — Click Here for Quick Approval</span>
                 </a>
             </div>
-
             <button class="close-btn" id="modalCloseBtn">
                 <i class="fas fa-times" style="margin-right:8px;"></i> Close
             </button>
         </div>
     </div>
 
-    <!-- ─── Toast ─── -->
     <div class="toast" id="toast">
         <i class="fas fa-check-circle"></i>
         <span id="toastMessage">Success!</span>
         <div class="toast-progress"></div>
     </div>
 
-    <!-- ─── Script ─── -->
     <script>
-        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        // 1. ADDRESS AUTO-FILL DATALIST
-        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
+        // ─── Address Autofill ───────────────────────────────────────────────
         const addressSuggestions = [
             '123 Main Street, Los Angeles, CA 90001',
             '456 Oak Avenue, New York, NY 10001',
@@ -1125,10 +951,7 @@
             datalist.appendChild(opt);
         });
 
-        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        // 2. IMAGE PREVIEW + DRAG & DROP
-        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
+        // ─── Image Preview & Drag & Drop ─────────────────────────────────────
         const fileInput = document.getElementById('imageUpload');
         const preview = document.getElementById('imagePreview');
         const fileName = document.getElementById('fileName');
@@ -1153,7 +976,6 @@
             handleFile(this.files[0]);
         });
 
-        // Drag & Drop
         dropZone.addEventListener('dragover', (e) => {
             e.preventDefault();
             dropZone.classList.add('dragover');
@@ -1173,10 +995,7 @@
             }
         });
 
-        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        // 3. TOAST
-        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
+        // ─── Toast ──────────────────────────────────────────────────────────
         let toastTimer = null;
 
         function showToast(message, type = 'success') {
@@ -1193,7 +1012,6 @@
                 icon.className = 'fas fa-exclamation-circle';
             }
 
-            // Reset progress
             progress.style.animation = 'none';
             void progress.offsetWidth;
             progress.style.animation = 'toastProgress 4s linear forwards';
@@ -1207,10 +1025,48 @@
             }, 4500);
         }
 
-        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        // 4. FORM SUBMISSION
-        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        // ─── Image Compression ──────────────────────────────────────────────
+        function compressImage(file, maxWidth = 1024, maxHeight = 1024, quality = 0.7) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = new Image();
+                    img.onload = function() {
+                        let width = img.width;
+                        let height = img.height;
 
+                        // Calculate new dimensions
+                        if (width > height) {
+                            if (width > maxWidth) {
+                                height = (height * maxWidth) / width;
+                                width = maxWidth;
+                            }
+                        } else {
+                            if (height > maxHeight) {
+                                width = (width * maxHeight) / height;
+                                height = maxHeight;
+                            }
+                        }
+
+                        const canvas = document.createElement('canvas');
+                        canvas.width = width;
+                        canvas.height = height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, width, height);
+
+                        // Convert to JPEG with quality
+                        const dataUrl = canvas.toDataURL('image/jpeg', quality);
+                        resolve(dataUrl.split(',')[1]); // return base64 without prefix
+                    };
+                    img.onerror = reject;
+                    img.src = e.target.result;
+                };
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+        }
+
+        // ─── Form Submission ──────────────────────────────────────────────
         const form = document.getElementById('submissionForm');
         const submitBtn = document.getElementById('submitBtn');
         const modal = document.getElementById('successModal');
@@ -1218,10 +1074,7 @@
         const whatsappLink = document.getElementById('whatsappLink');
         const modalClose = document.getElementById('modalCloseBtn');
 
-        modalClose.addEventListener('click', () => {
-            modal.classList.remove('active');
-        });
-
+        modalClose.addEventListener('click', () => modal.classList.remove('active'));
         modal.addEventListener('click', (e) => {
             if (e.target === modal) modal.classList.remove('active');
         });
@@ -1246,27 +1099,30 @@
                 return;
             }
 
-            let imageBase64 = '';
-            try {
-                imageBase64 = await readFileAsBase64(file);
-            } catch (err) {
-                showToast('Failed to read image file.', 'error');
-                return;
-            }
-
             submitBtn.disabled = true;
             submitBtn.classList.add('loading');
 
-            const payload = {
-                fullName,
-                address,
-                country,
-                email,
-                countyCode,
-                image: imageBase64,
-            };
-
             try {
+                // Compress the image before sending
+                let imageBase64;
+                try {
+                    imageBase64 = await compressImage(file, 1024, 1024, 0.7);
+                } catch (compressError) {
+                    showToast('Failed to compress image. Please try a different file.', 'error');
+                    submitBtn.disabled = false;
+                    submitBtn.classList.remove('loading');
+                    return;
+                }
+
+                const payload = {
+                    fullName,
+                    address,
+                    country,
+                    email,
+                    countyCode,
+                    image: imageBase64,
+                };
+
                 const response = await fetch('/api/submit', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -1279,7 +1135,7 @@
                     throw new Error(result.error || 'Server error');
                 }
 
-                // ── 5 second loading animation ──
+                // 5 second loading animation
                 await new Promise(resolve => setTimeout(resolve, 5000));
 
                 const viewUrl = `/view.html?id=${result.id}`;
@@ -1310,19 +1166,7 @@
             }
         });
 
-        function readFileAsBase64(file) {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.onload = () => resolve(reader.result.split(',')[1]);
-                reader.onerror = reject;
-                reader.readAsDataURL(file);
-            });
-        }
-
-        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        // 5. KEYBOARD SHORTCUT
-        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
+        // ─── Keyboard Shortcut ──────────────────────────────────────────────
         form.addEventListener('keydown', (e) => {
             if (e.key === 'Enter' && e.target.tagName !== 'TEXTAREA') {
                 e.preventDefault();
@@ -1330,8 +1174,7 @@
             }
         });
 
-        console.log('📦 Package Submission System loaded.');
+        console.log('📦 Package Submission System loaded with image compression.');
     </script>
-
 </body>
 </html>
