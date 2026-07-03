@@ -14,8 +14,8 @@ app.use(bodyParser.json({ limit: '10mb' }));
 app.use(express.static(path.join(__dirname))); // serve static files
 
 // ── JSONBin Configuration (hardcoded) ──
-const JSONBIN_BIN_ID = 'YOUR_JSONBIN_BIN_ID';        // Replace with your bin ID
-const JSONBIN_API_KEY = 'YOUR_JSONBIN_API_KEY';      // Replace with your master key
+const JSONBIN_BIN_ID = '6a47e235da38895dfe299a10';        // Replace with your bin ID
+const JSONBIN_API_KEY = '$2a$10$yAgKMt6GKitAdLZbY864Auu79zK7L6gKzLXAL7UPEZ/fRhWJX3/tW';      // Replace with your master key
 const JSONBIN_URL = `https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`;
 
 // ── ntfy Configuration ──
