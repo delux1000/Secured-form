@@ -10,9 +10,7 @@ const PORT = process.env.PORT || 3000;
 
 // ─── Middleware ────────────────────────────────────────────────
 app.use(cors());
-// Increase limit to 50MB to handle large image payloads
-app.use(bodyParser.json({ limit: '50mb' }));
-app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
+app.use(bodyParser.json({ limit: '50mb' })); // safe upper limit
 
 // ─── Serve static files ──────────────────────────────────────
 app.use(express.static(path.join(__dirname, 'public')));
@@ -35,27 +33,16 @@ async function getSubmissions() {
     });
     const data = response.data.record;
     if (!data || !Array.isArray(data.submissions)) {
-      console.warn('⚠️ JSONBin record missing submissions array. Initializing.');
       await saveSubmissions([]);
       return [];
     }
     return data.submissions;
   } catch (error) {
     if (error.response && error.response.status === 404) {
-      console.warn('⚠️ JSONBin bin not found. Creating a new one with empty submissions.');
-      try {
-        await saveSubmissions([]);
-        return [];
-      } catch (createError) {
-        console.error('❌ Failed to create bin:', createError.message);
-        throw new Error('Could not initialize storage. Check bin ID and API key.');
-      }
+      await saveSubmissions([]);
+      return [];
     }
     console.error('❌ Error reading from JSONBin:', error.message);
-    if (error.response) {
-      console.error('   Status:', error.response.status);
-      console.error('   Data:', error.response.data);
-    }
     throw new Error(`Failed to read from storage: ${error.message}`);
   }
 }
@@ -63,7 +50,7 @@ async function getSubmissions() {
 // ─── Helper: Write submissions ──────────────────────────────
 async function saveSubmissions(submissions) {
   try {
-    const response = await axios.put(
+    await axios.put(
       JSONBIN_PUT_URL,
       { submissions },
       {
@@ -74,19 +61,8 @@ async function saveSubmissions(submissions) {
       }
     );
     console.log('✅ JSONBin write successful.');
-    return response.data;
   } catch (error) {
-    console.error('❌ Error writing to JSONBin:');
-    if (error.response) {
-      console.error('   Status:', error.response.status);
-      console.error('   Data:', error.response.data);
-      // If payload too large, give a clear message
-      if (error.response.status === 413) {
-        throw new Error('Image too large. Please compress it further.');
-      }
-    } else {
-      console.error('   Message:', error.message);
-    }
+    console.error('❌ Error writing to JSONBin:', error.response?.data || error.message);
     throw new Error(`Failed to save to storage: ${error.response?.data?.message || error.message}`);
   }
 }
@@ -107,9 +83,12 @@ app.post('/api/submit', async (req, res) => {
     const { fullName, address, country, email, countyCode, image } = req.body;
 
     if (!fullName || !address || !country || !email || !countyCode || !image) {
-      return res.status(400).json({
-        error: 'All fields are required: fullName, address, country, email, countyCode, image.'
-      });
+      return res.status(400).json({ error: 'All fields are required.' });
+    }
+
+    // Optional: reject if image base64 is still huge (>200KB)
+    if (image.length > 250000) { // ~200KB base64
+      return res.status(400).json({ error: 'Image too large even after compression. Please use a smaller image.' });
     }
 
     const submissions = await getSubmissions();
@@ -168,10 +147,8 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// ─── Start ──────────────────────────────────────────────────
 app.listen(PORT, () => {
   console.log(`🚀 Server running on http://localhost:${PORT}`);
   console.log(`📦 JSONBin Bin ID: ${JSONBIN_BIN_ID}`);
   console.log(`📢 ntfy topic: ${NTFY_TOPIC}`);
-  console.log(`📁 Serving static files from: ${path.join(__dirname, 'public')}`);
 });
