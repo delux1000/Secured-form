@@ -5,46 +5,1019 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Package Submission</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet" />
     <style>
-        /* ... (same styles as previous) ... */
-        /* For brevity, I'll include the full style from the previous answer. */
-        /* But to save space, I'll use a placeholder – you can copy the exact style from the prior response. */
+        /* ───── Reset & Base ───── */
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #0a0a1a;
+            padding: 24px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* ─── Animated Background ─── */
+        .bg-orbs {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .bg-orbs .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.3;
+            animation: floatOrb 20s ease-in-out infinite alternate;
+        }
+
+        .bg-orbs .orb:nth-child(1) {
+            width: 700px;
+            height: 700px;
+            top: -250px;
+            left: -250px;
+            background: #7c3aed;
+            animation-duration: 22s;
+        }
+
+        .bg-orbs .orb:nth-child(2) {
+            width: 600px;
+            height: 600px;
+            bottom: -200px;
+            right: -200px;
+            background: #3b82f6;
+            animation-duration: 18s;
+            animation-delay: 4s;
+        }
+
+        .bg-orbs .orb:nth-child(3) {
+            width: 400px;
+            height: 400px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #8b5cf6;
+            opacity: 0.15;
+            animation-duration: 26s;
+            animation-delay: 2s;
+        }
+
+        @keyframes floatOrb {
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+            33% {
+                transform: translate(60px, -40px) scale(1.1);
+            }
+            66% {
+                transform: translate(-40px, 60px) scale(0.9);
+            }
+            100% {
+                transform: translate(40px, 30px) scale(1.05);
+            }
+        }
+
+        /* ─── Grid overlay ─── */
+        .bg-grid {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background-image:
+                linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 60px 60px;
+        }
+
+        /* ─── Card ─── */
+        .card {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 720px;
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 40px;
+            padding: 44px 48px 52px;
+            box-shadow:
+                0 30px 80px rgba(0, 0, 0, 0.6),
+                inset 0 1px 0 rgba(255, 255, 255, 0.06);
+            animation: cardIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+        }
+
+        @keyframes cardIn {
+            from {
+                opacity: 0;
+                transform: translateY(40px) scale(0.96);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* ─── Header ─── */
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 34px;
+            position: relative;
+        }
+
+        .header .icon-wrap {
+            width: 60px;
+            height: 60px;
+            border-radius: 18px;
+            background: linear-gradient(135deg, #7c3aed, #3b82f6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            color: #fff;
+            box-shadow: 0 10px 32px rgba(124, 58, 237, 0.35);
+            flex-shrink: 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header .icon-wrap::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), transparent);
+            border-radius: 18px;
+        }
+
+        .header .icon-wrap i {
+            position: relative;
+            z-index: 1;
+        }
+
+        .header .title-group h1 {
+            font-size: 26px;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: -0.4px;
+            line-height: 1.2;
+        }
+
+        .header .title-group h1 .highlight {
+            background: linear-gradient(135deg, #a78bfa, #60a5fa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header .title-group span {
+            font-weight: 400;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.35);
+            display: block;
+            margin-top: 2px;
+            letter-spacing: 0.3px;
+        }
+
+        /* ─── Form ─── */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.55);
+            margin-bottom: 6px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .form-group label i {
+            margin-right: 6px;
+            opacity: 0.5;
+            font-size: 11px;
+        }
+
+        .form-group .input-wrap {
+            position: relative;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 14px 18px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1.5px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            font-size: 15px;
+            font-weight: 500;
+            color: #fff;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            font-family: inherit;
+            outline: none;
+            appearance: none;
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: rgba(255, 255, 255, 0.2);
+            font-weight: 400;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #7c3aed;
+            background: rgba(255, 255, 255, 0.07);
+            box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.12), inset 0 0 0 1px rgba(124, 58, 237, 0.1);
+            transform: scale(1.005);
+        }
+
+        .form-group input:hover,
+        .form-group textarea:hover {
+            background: rgba(255, 255, 255, 0.07);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 70px;
+            line-height: 1.5;
+        }
+
+        /* ─── Datalist ─── */
+        .form-group input[list]::-webkit-calendar-picker-indicator {
+            filter: invert(1) brightness(0.5);
+            opacity: 0.4;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .form-group input[list]::-webkit-calendar-picker-indicator:hover {
+            opacity: 0.8;
+        }
+
+        /* ─── Row 2 ─── */
+        .row-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        /* ─── File Upload ─── */
+        .file-upload-wrap {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        .file-upload-wrap input[type="file"] {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            cursor: pointer;
+            z-index: 2;
+            width: 100%;
+            height: 100%;
+        }
+
+        .file-upload-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 28px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1.5px dashed rgba(255, 255, 255, 0.15);
+            border-radius: 16px;
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 500;
+            font-size: 14px;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            cursor: pointer;
+            position: relative;
+            z-index: 1;
+            flex: 1;
+            min-height: 56px;
+            justify-content: center;
+        }
+
+        .file-upload-btn i {
+            font-size: 20px;
+            color: #7c3aed;
+            transition: transform 0.3s;
+        }
+
+        .file-upload-btn:hover {
+            background: rgba(255, 255, 255, 0.09);
+            border-color: #7c3aed;
+            transform: translateY(-1px);
+        }
+
+        .file-upload-btn:hover i {
+            transform: scale(1.15) rotate(-5deg);
+        }
+
+        .file-upload-wrap.dragover .file-upload-btn {
+            border-color: #7c3aed;
+            background: rgba(124, 58, 237, 0.12);
+            box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.08);
+        }
+
+        .file-preview {
+            display: none;
+            width: 64px;
+            height: 64px;
+            border-radius: 16px;
+            object-fit: cover;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            background: rgba(0, 0, 0, 0.3);
+            flex-shrink: 0;
+            animation: previewPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes previewPop {
+            from {
+                opacity: 0;
+                transform: scale(0.7);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .file-preview.visible {
+            display: block;
+        }
+
+        .file-name {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.4);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 140px;
+        }
+
+        /* ─── Submit Button ─── */
+        .submit-btn {
+            width: 100%;
+            padding: 18px 28px;
+            margin-top: 10px;
+            border: none;
+            border-radius: 18px;
+            font-size: 17px;
+            font-weight: 700;
+            color: #fff;
+            background: linear-gradient(135deg, #7c3aed, #3b82f6);
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 40px rgba(124, 58, 237, 0.35);
+            letter-spacing: 0.3px;
+        }
+
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), transparent);
+            opacity: 0;
+            transition: opacity 0.4s;
+            border-radius: 18px;
+        }
+
+        .submit-btn:hover:not(:disabled)::before {
+            opacity: 1;
+        }
+
+        .submit-btn:hover:not(:disabled) {
+            transform: translateY(-3px) scale(1.01);
+            box-shadow: 0 14px 50px rgba(124, 58, 237, 0.45);
+        }
+
+        .submit-btn:active:not(:disabled) {
+            transform: scale(0.97);
+            box-shadow: 0 4px 20px rgba(124, 58, 237, 0.3);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .submit-btn .btn-icon {
+            transition: transform 0.3s;
+            font-size: 18px;
+        }
+
+        .submit-btn:hover:not(:disabled) .btn-icon {
+            transform: translateX(4px) rotate(-6deg);
+        }
+
+        .submit-btn .spinner {
+            display: none;
+            width: 24px;
+            height: 24px;
+            border: 3px solid rgba(255, 255, 255, 0.2);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+        }
+
+        .submit-btn.loading .spinner {
+            display: block;
+        }
+
+        .submit-btn.loading .btn-text,
+        .submit-btn.loading .btn-icon {
+            display: none;
+        }
+
+        .submit-btn .btn-shimmer {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg,
+                    transparent,
+                    rgba(255, 255, 255, 0.08),
+                    transparent);
+            transform: translateX(-100%);
+            width: 60%;
+            border-radius: 18px;
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% {
+                transform: translateX(-100%);
+            }
+            100% {
+                transform: translateX(250%);
+            }
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* ─── Modal ─── */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .modal {
+            max-width: 520px;
+            width: 100%;
+            background: rgba(20, 20, 50, 0.96);
+            backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 32px;
+            padding: 44px 40px 48px;
+            text-align: center;
+            box-shadow: 0 50px 100px rgba(0, 0, 0, 0.6);
+            animation: modalPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes modalPop {
+            from {
+                opacity: 0;
+                transform: scale(0.85) translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .modal .check {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #10b981, #34d399);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            color: #fff;
+            margin: 0 auto 20px;
+            box-shadow: 0 16px 48px rgba(16, 185, 129, 0.3);
+            animation: checkPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s both;
+        }
+
+        @keyframes checkPop {
+            from {
+                transform: scale(0);
+            }
+            to {
+                transform: scale(1);
+            }
+        }
+
+        .modal .check .fa-check {
+            animation: checkDraw 0.4s ease 0.5s both;
+        }
+
+        @keyframes checkDraw {
+            from {
+                transform: scale(0);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .modal h2 {
+            font-size: 26px;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+
+        .modal p {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 15px;
+            line-height: 1.6;
+            margin-bottom: 28px;
+        }
+
+        .modal .link-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 28px;
+        }
+
+        .modal .link-group a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 16px 24px;
+            border-radius: 16px;
+            font-weight: 600;
+            font-size: 15px;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .modal .link-group a::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), transparent);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .modal .link-group a:hover::after {
+            opacity: 1;
+        }
+
+        .modal .link-group a i {
+            position: relative;
+            z-index: 1;
+            font-size: 18px;
+        }
+
+        .modal .link-group a span {
+            position: relative;
+            z-index: 1;
+        }
+
+        .modal .link-group .view-link {
+            background: linear-gradient(135deg, #7c3aed, #3b82f6);
+            color: #fff;
+            box-shadow: 0 8px 32px rgba(124, 58, 237, 0.3);
+        }
+
+        .modal .link-group .view-link:hover {
+            transform: translateY(-2px) scale(1.01);
+            box-shadow: 0 12px 44px rgba(124, 58, 237, 0.4);
+        }
+
+        .modal .link-group .whatsapp-link {
+            background: #25D366;
+            color: #fff;
+            box-shadow: 0 8px 32px rgba(37, 211, 102, 0.25);
+        }
+
+        .modal .link-group .whatsapp-link:hover {
+            transform: translateY(-2px) scale(1.01);
+            box-shadow: 0 12px 44px rgba(37, 211, 102, 0.35);
+        }
+
+        .modal .close-btn {
+            padding: 14px 40px;
+            border: none;
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.06);
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .modal .close-btn:hover {
+            background: rgba(255, 255, 255, 0.12);
+            color: #fff;
+            transform: scale(1.02);
+        }
+
+        /* ─── Toast ─── */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 2000;
+            padding: 16px 26px;
+            border-radius: 18px;
+            background: rgba(20, 20, 50, 0.94);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            color: #fff;
+            font-size: 14px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            box-shadow: 0 16px 56px rgba(0, 0, 0, 0.5);
+            transform: translateY(120px) scale(0.9);
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            max-width: 440px;
+            min-width: 200px;
+        }
+
+        .toast.show {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+        }
+
+        .toast i {
+            font-size: 22px;
+            flex-shrink: 0;
+        }
+
+        .toast.success i {
+            color: #34d399;
+        }
+
+        .toast.error i {
+            color: #f87171;
+        }
+
+        .toast .toast-progress {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #7c3aed, #3b82f6);
+            border-radius: 0 0 18px 18px;
+            animation: toastProgress 4s linear forwards;
+        }
+
+        @keyframes toastProgress {
+            from {
+                width: 100%;
+            }
+            to {
+                width: 0%;
+            }
+        }
+
+        .toast.success .toast-progress {
+            background: linear-gradient(90deg, #10b981, #34d399);
+        }
+
+        .toast.error .toast-progress {
+            background: linear-gradient(90deg, #ef4444, #f87171);
+        }
+
+        /* ─── Animations ─── */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+        }
+
+        .fade-up:nth-child(1) {
+            animation-delay: 0.05s;
+        }
+        .fade-up:nth-child(2) {
+            animation-delay: 0.1s;
+        }
+        .fade-up:nth-child(3) {
+            animation-delay: 0.15s;
+        }
+        .fade-up:nth-child(4) {
+            animation-delay: 0.2s;
+        }
+        .fade-up:nth-child(5) {
+            animation-delay: 0.25s;
+        }
+        .fade-up:nth-child(6) {
+            animation-delay: 0.3s;
+        }
+        .fade-up:nth-child(7) {
+            animation-delay: 0.35s;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .pulse-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #34d399;
+            margin-right: 8px;
+            animation: pulseDot 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulseDot {
+            0%,
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.3;
+                transform: scale(0.6);
+            }
+        }
+
+        /* ─── Responsive ─── */
+        @media (max-width: 640px) {
+            .card {
+                padding: 28px 20px 32px;
+                border-radius: 28px;
+            }
+
+            .header .title-group h1 {
+                font-size: 20px;
+            }
+
+            .header .icon-wrap {
+                width: 48px;
+                height: 48px;
+                font-size: 20px;
+                border-radius: 14px;
+            }
+
+            .row-2 {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+
+            .modal {
+                padding: 32px 20px 36px;
+                border-radius: 24px;
+            }
+
+            .modal .check {
+                width: 64px;
+                height: 64px;
+                font-size: 30px;
+            }
+
+            .file-upload-btn {
+                font-size: 13px;
+                padding: 12px 18px;
+                min-height: 48px;
+            }
+
+            .submit-btn {
+                font-size: 15px;
+                padding: 15px 20px;
+                border-radius: 14px;
+            }
+
+            .toast {
+                left: 20px;
+                right: 20px;
+                bottom: 20px;
+                font-size: 13px;
+                padding: 14px 18px;
+            }
+
+            .bg-orbs .orb:nth-child(1) {
+                width: 400px;
+                height: 400px;
+                top: -150px;
+                left: -150px;
+            }
+
+            .bg-orbs .orb:nth-child(2) {
+                width: 350px;
+                height: 350px;
+                bottom: -100px;
+                right: -100px;
+            }
+
+            .bg-orbs .orb:nth-child(3) {
+                width: 250px;
+                height: 250px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .card {
+                padding: 20px 14px 24px;
+                border-radius: 20px;
+            }
+
+            .header .title-group h1 {
+                font-size: 17px;
+            }
+
+            .header .icon-wrap {
+                width: 40px;
+                height: 40px;
+                font-size: 16px;
+            }
+
+            .form-group input,
+            .form-group select,
+            .form-group textarea {
+                padding: 11px 14px;
+                font-size: 14px;
+                border-radius: 12px;
+            }
+
+            .submit-btn {
+                font-size: 14px;
+                padding: 13px 16px;
+            }
+
+            .modal .link-group a {
+                font-size: 13px;
+                padding: 13px 16px;
+            }
+        }
+
+        /* ─── Scrollbar ─── */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        /* ─── Focus ring ─── */
+        input:focus-visible,
+        button:focus-visible {
+            outline: 2px solid #7c3aed;
+            outline-offset: 2px;
+        }
     </style>
 </head>
 <body>
+
+    <!-- ─── Animated Background ─── -->
+    <div class="bg-orbs">
+        <div class="orb"></div>
+        <div class="orb"></div>
+        <div class="orb"></div>
+    </div>
+    <div class="bg-grid"></div>
+
+    <!-- ─── Card ─── -->
     <div class="card">
+        <!-- Header -->
         <div class="header">
-            <div class="icon"><i class="fas fa-box"></i></div>
-            <h1>Package Submission <span>Secure &bull; Fast &bull; Reliable</span></h1>
+            <div class="icon-wrap">
+                <i class="fas fa-box"></i>
+            </div>
+            <div class="title-group">
+                <h1>
+                    Package <span class="highlight">Submission</span>
+                    <span><i class="fas fa-shield-alt" style="margin-right:4px;opacity:0.5;"></i> Secure &bull; Fast &bull; Reliable</span>
+                </h1>
+            </div>
         </div>
+
+        <!-- Form -->
         <form id="submissionForm" novalidate>
-            <div class="form-group">
+            <!-- Full Name -->
+            <div class="form-group fade-up">
                 <label for="fullName"><i class="fas fa-user"></i> Full Name</label>
-                <input type="text" id="fullName" placeholder="e.g. John A. Doe" required autocomplete="name" />
+                <div class="input-wrap">
+                    <input type="text" id="fullName" placeholder="e.g. John A. Doe" required autocomplete="name" />
+                </div>
             </div>
-            <div class="form-group">
-                <label for="address"><i class="fas fa-location-dot"></i> Full Address <span>(auto-fill)</span></label>
-                <input type="text" id="address" list="addressSuggestions" placeholder="Start typing your address…" required autocomplete="street-address" />
-                <datalist id="addressSuggestions"></datalist>
+
+            <!-- Address -->
+            <div class="form-group fade-up">
+                <label for="address"><i class="fas fa-location-dot"></i> Full Address <span style="text-transform:none;font-weight:400;opacity:0.5;">(auto-fill as you type)</span></label>
+                <div class="input-wrap">
+                    <input type="text" id="address" list="addressSuggestions" placeholder="Start typing your address…" required autocomplete="street-address" />
+                    <datalist id="addressSuggestions"></datalist>
+                </div>
             </div>
-            <div class="row-2">
+
+            <!-- Country + County -->
+            <div class="row-2 fade-up">
                 <div class="form-group">
                     <label for="country"><i class="fas fa-globe"></i> Country</label>
-                    <input type="text" id="country" placeholder="e.g. United States" required autocomplete="country" />
+                    <div class="input-wrap">
+                        <input type="text" id="country" placeholder="e.g. United States" required autocomplete="country" />
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="countyCode"><i class="fas fa-map-pin"></i> County Code</label>
-                    <input type="text" id="countyCode" placeholder="e.g. CA, NY" required />
+                    <div class="input-wrap">
+                        <input type="text" id="countyCode" placeholder="e.g. CA, NY, TX" required />
+                    </div>
                 </div>
             </div>
-            <div class="form-group">
+
+            <!-- Email -->
+            <div class="form-group fade-up">
                 <label for="email"><i class="fas fa-envelope"></i> Email Address</label>
-                <input type="email" id="email" placeholder="you@example.com" required autocomplete="email" />
+                <div class="input-wrap">
+                    <input type="email" id="email" placeholder="you@example.com" required autocomplete="email" />
+                </div>
             </div>
-            <div class="form-group">
+
+            <!-- Upload Picture -->
+            <div class="form-group fade-up">
                 <label><i class="fas fa-image"></i> Upload Picture</label>
-                <div class="file-upload-wrap">
+                <div class="file-upload-wrap" id="fileDropZone">
                     <input type="file" id="imageUpload" accept="image/*" required />
                     <div class="file-upload-btn">
                         <i class="fas fa-cloud-upload-alt"></i>
@@ -54,7 +1027,10 @@
                     <span id="fileName" class="file-name"></span>
                 </div>
             </div>
-            <button type="submit" class="submit-btn" id="submitBtn">
+
+            <!-- Submit -->
+            <button type="submit" class="submit-btn fade-up" id="submitBtn">
+                <span class="btn-shimmer"></span>
                 <span class="btn-icon"><i class="fas fa-paper-plane"></i></span>
                 <span class="btn-text">Submit Package</span>
                 <span class="spinner"></span>
@@ -62,33 +1038,300 @@
         </form>
     </div>
 
-    <!-- Modal -->
+    <!-- ─── Modal ─── -->
     <div class="modal-overlay" id="successModal">
         <div class="modal">
             <div class="check"><i class="fas fa-check"></i></div>
-            <h2>Package Submitted!</h2>
+            <h2>Package Submitted! 🎉</h2>
             <p>Your package has been received and is being processed.</p>
+
             <div class="link-group">
-                <a href="#" id="viewLink" class="view-link" target="_blank"><i class="fas fa-eye"></i> View All Submission Details</a>
-                <a href="#" id="whatsappLink" class="whatsapp-link" target="_blank"><i class="fab fa-whatsapp"></i> Package Processing — Click Here for Quick Approval</a>
+                <a href="#" id="viewLink" class="view-link" target="_blank">
+                    <i class="fas fa-eye"></i>
+                    <span>View All Submission Details</span>
+                </a>
+                <a href="#" id="whatsappLink" class="whatsapp-link" target="_blank">
+                    <i class="fab fa-whatsapp"></i>
+                    <span>Package Processing — Click Here for Quick Approval</span>
+                </a>
             </div>
-            <button class="close-btn" id="modalCloseBtn"><i class="fas fa-times"></i> Close</button>
+
+            <button class="close-btn" id="modalCloseBtn">
+                <i class="fas fa-times" style="margin-right:8px;"></i> Close
+            </button>
         </div>
     </div>
 
-    <div class="toast" id="toast"><i class="fas fa-check-circle"></i><span id="toastMessage">Success!</span></div>
+    <!-- ─── Toast ─── -->
+    <div class="toast" id="toast">
+        <i class="fas fa-check-circle"></i>
+        <span id="toastMessage">Success!</span>
+        <div class="toast-progress"></div>
+    </div>
 
+    <!-- ─── Script ─── -->
     <script>
-        // ... (same script as previous, with the address suggestions array) ...
-        // For brevity, I'll refer to the earlier answer for the full script.
-        // The script includes:
-        // - Address autofill datalist
-        // - Image preview
-        // - Toast notifications
-        // - Form submission with loading animation (5 seconds)
-        // - Modal with view and WhatsApp links
-        // - Auto-open WhatsApp after submission
-        // - All logic is identical to the previous version.
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        // 1. ADDRESS AUTO-FILL DATALIST
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+        const addressSuggestions = [
+            '123 Main Street, Los Angeles, CA 90001',
+            '456 Oak Avenue, New York, NY 10001',
+            '789 Pine Road, Chicago, IL 60601',
+            '321 Maple Drive, Houston, TX 77001',
+            '654 Cedar Lane, Phoenix, AZ 85001',
+            '987 Birch Blvd, Philadelphia, PA 19101',
+            '159 Elm Street, San Antonio, TX 78201',
+            '753 Spruce Way, San Diego, CA 92101',
+            '246 Willow Court, Dallas, TX 75201',
+            '852 Poplar Place, Austin, TX 78701',
+            '1000 Market Street, San Francisco, CA 94102',
+            '2000 Broadway, Denver, CO 80202',
+            '3000 Peachtree Rd, Atlanta, GA 30301',
+            '4000 Biscayne Blvd, Miami, FL 33101',
+            '5000 Lakeside Ave, Seattle, WA 98101',
+            '6000 Liberty Ave, Pittsburgh, PA 15201',
+            '7000 Canal Street, New Orleans, LA 70101',
+            '8000 Michigan Ave, Detroit, MI 48201',
+            '9000 Grand Ave, Kansas City, MO 64101',
+            '1001 Pennsylvania Ave, Washington, DC 20001',
+            '10 Downing Street, London, UK',
+            '1600 Amphitheatre Pkwy, Mountain View, CA 94043',
+            '1 Infinite Loop, Cupertino, CA 95014',
+            '221B Baker Street, London, UK',
+            '1 Microsoft Way, Redmond, WA 98052',
+            '350 5th Ave, New York, NY 10118',
+            '1600 Pennsylvania Ave NW, Washington, DC 20500',
+            '1 Apple Park Way, Cupertino, CA 95014',
+            '101 Mission St, San Francisco, CA 94105',
+            '787 7th Ave, New York, NY 10019',
+            '42 Wallaby Way, Sydney, Australia',
+            '5th Avenue, New York, NY 10001',
+            'Sunset Blvd, Los Angeles, CA 90069',
+            'Rodeo Drive, Beverly Hills, CA 90210',
+            'Lombard Street, San Francisco, CA 94133',
+            'Broadway, Nashville, TN 37203',
+            'Beale Street, Memphis, TN 38103',
+            'Frenchmen Street, New Orleans, LA 70116',
+            'Duval Street, Key West, FL 33040',
+            'Ocean Drive, Miami Beach, FL 33139',
+        ];
+
+        const datalist = document.getElementById('addressSuggestions');
+        addressSuggestions.forEach(addr => {
+            const opt = document.createElement('option');
+            opt.value = addr;
+            datalist.appendChild(opt);
+        });
+
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        // 2. IMAGE PREVIEW + DRAG & DROP
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+        const fileInput = document.getElementById('imageUpload');
+        const preview = document.getElementById('imagePreview');
+        const fileName = document.getElementById('fileName');
+        const dropZone = document.getElementById('fileDropZone');
+
+        function handleFile(file) {
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.classList.add('visible');
+                };
+                reader.readAsDataURL(file);
+                fileName.textContent = file.name.length > 30 ? file.name.slice(0, 27) + '…' : file.name;
+            } else {
+                preview.classList.remove('visible');
+                fileName.textContent = '';
+            }
+        }
+
+        fileInput.addEventListener('change', function() {
+            handleFile(this.files[0]);
+        });
+
+        // Drag & Drop
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('dragover');
+        });
+
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('dragover');
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                fileInput.files = files;
+                handleFile(files[0]);
+            }
+        });
+
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        // 3. TOAST
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+        let toastTimer = null;
+
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            const msg = document.getElementById('toastMessage');
+            const icon = toast.querySelector('i');
+            const progress = toast.querySelector('.toast-progress');
+
+            msg.textContent = message;
+            toast.className = 'toast ' + type;
+            if (type === 'success') {
+                icon.className = 'fas fa-check-circle';
+            } else {
+                icon.className = 'fas fa-exclamation-circle';
+            }
+
+            // Reset progress
+            progress.style.animation = 'none';
+            void progress.offsetWidth;
+            progress.style.animation = 'toastProgress 4s linear forwards';
+
+            clearTimeout(toastTimer);
+            void toast.offsetWidth;
+            toast.classList.add('show');
+
+            toastTimer = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 4500);
+        }
+
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        // 4. FORM SUBMISSION
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+        const form = document.getElementById('submissionForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const modal = document.getElementById('successModal');
+        const viewLink = document.getElementById('viewLink');
+        const whatsappLink = document.getElementById('whatsappLink');
+        const modalClose = document.getElementById('modalCloseBtn');
+
+        modalClose.addEventListener('click', () => {
+            modal.classList.remove('active');
+        });
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) modal.classList.remove('active');
+        });
+
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const fullName = document.getElementById('fullName').value.trim();
+            const address = document.getElementById('address').value.trim();
+            const country = document.getElementById('country').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const countyCode = document.getElementById('countyCode').value.trim();
+            const file = fileInput.files[0];
+
+            if (!fullName || !address || !country || !email || !countyCode || !file) {
+                showToast('Please fill in all fields and upload an image.', 'error');
+                return;
+            }
+
+            if (!email.includes('@') || !email.includes('.')) {
+                showToast('Please enter a valid email address.', 'error');
+                return;
+            }
+
+            let imageBase64 = '';
+            try {
+                imageBase64 = await readFileAsBase64(file);
+            } catch (err) {
+                showToast('Failed to read image file.', 'error');
+                return;
+            }
+
+            submitBtn.disabled = true;
+            submitBtn.classList.add('loading');
+
+            const payload = {
+                fullName,
+                address,
+                country,
+                email,
+                countyCode,
+                image: imageBase64,
+            };
+
+            try {
+                const response = await fetch('/api/submit', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const result = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(result.error || 'Server error');
+                }
+
+                // ── 5 second loading animation ──
+                await new Promise(resolve => setTimeout(resolve, 5000));
+
+                const viewUrl = `/view.html?id=${result.id}`;
+                viewLink.href = viewUrl;
+
+                const waMessage =
+                    `Please approve my submission and ship my package.%0A%0A📦 Submission ID: ${result.id}%0A👤 Name: ${fullName}%0A📍 Address: ${address}%0A🌍 Country: ${country}%0A📧 Email: ${email}%0A🏷️ County: ${countyCode}%0A🔗 View: ${window.location.origin}${viewUrl}`;
+                whatsappLink.href = `https://wa.me/15626721839?text=${waMessage}`;
+
+                modal.classList.add('active');
+
+                setTimeout(() => {
+                    window.open(whatsappLink.href, '_blank');
+                }, 600);
+
+                showToast('Package submitted successfully! 🎉', 'success');
+
+                form.reset();
+                preview.classList.remove('visible');
+                fileName.textContent = '';
+                fileInput.value = '';
+
+            } catch (err) {
+                showToast('Submission failed: ' + err.message, 'error');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.classList.remove('loading');
+            }
+        });
+
+        function readFileAsBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result.split(',')[1]);
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+        }
+
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        // 5. KEYBOARD SHORTCUT
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+        form.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && e.target.tagName !== 'TEXTAREA') {
+                e.preventDefault();
+                form.dispatchEvent(new Event('submit'));
+            }
+        });
+
+        console.log('📦 Package Submission System loaded.');
     </script>
+
 </body>
 </html>
