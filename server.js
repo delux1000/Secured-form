@@ -10,7 +10,7 @@ const PORT = process.env.PORT || 3000;
 
 // ─── Middleware ────────────────────────────────────────────────
 app.use(cors());
-app.use(bodyParser.json({ limit: '50mb' })); // safe upper limit
+app.use(bodyParser.json({ limit: '10mb' }));
 
 // ─── Serve static files ──────────────────────────────────────
 app.use(express.static(path.join(__dirname, 'public')));
@@ -80,15 +80,14 @@ app.get('/api/test', async (req, res) => {
 
 app.post('/api/submit', async (req, res) => {
   try {
-    const { fullName, address, country, email, countyCode, image } = req.body;
+    const { fullName, address, country, email, countyCode } = req.body;
 
-    if (!fullName || !address || !country || !email || !countyCode || !image) {
+    if (!fullName || !address || !country || !email || !countyCode) {
       return res.status(400).json({ error: 'All fields are required.' });
     }
 
-    // Optional: reject if image base64 is still huge (>200KB)
-    if (image.length > 250000) { // ~200KB base64
-      return res.status(400).json({ error: 'Image too large even after compression. Please use a smaller image.' });
+    if (!email.includes('@') || !email.includes('.')) {
+      return res.status(400).json({ error: 'Please enter a valid email address.' });
     }
 
     const submissions = await getSubmissions();
@@ -100,7 +99,6 @@ app.post('/api/submit', async (req, res) => {
       country: country.trim(),
       email: email.trim().toLowerCase(),
       countyCode: countyCode.trim().toUpperCase(),
-      image,
       timestamp: new Date().toISOString(),
       status: 'pending'
     };
@@ -108,6 +106,7 @@ app.post('/api/submit', async (req, res) => {
     submissions.push(newEntry);
     await saveSubmissions(submissions);
 
+    // ── Send ntfy notification ──
     const viewUrl = `http://localhost:${PORT}/view.html?id=${id}`;
     const adminUrl = `http://localhost:${PORT}/admin.html`;
     const message = `📦 New submission from ${fullName}\nView: ${viewUrl}\nAdmin: ${adminUrl}`;
