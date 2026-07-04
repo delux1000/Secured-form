@@ -12,7 +12,8 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(bodyParser.json({ limit: '10mb' }));
 
-// ─── Serve static files (index.html, admin.html, view.html, etc.) ──
+// ─── Serve static files from "public" folder ──────────────────
+// This will serve index.html, admin.html, view.html, and any assets.
 app.use(express.static(path.join(__dirname, 'public')));
 
 // ─── JSONBin Configuration ──────────────────────────────────
@@ -25,23 +26,20 @@ const JSONBIN_PUT_URL = `https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`;
 const NTFY_TOPIC = 'p_reg';
 const NTFY_URL = `https://ntfy.sh/${NTFY_TOPIC}`;
 
-// ─── Helper: Read submissions ──────────────────────────────
+// ─── Helpers ──────────────────────────────────────────────────
 async function getSubmissions() {
   try {
     const response = await axios.get(JSONBIN_GET_URL, {
       headers: { 'X-Master-Key': JSONBIN_API_KEY }
     });
     const data = response.data.record;
-    // Ensure the record has a submissions array
     if (!data || !Array.isArray(data.submissions)) {
-      // If the structure is wrong, reset to empty array
       await saveSubmissions([]);
       return [];
     }
     return data.submissions;
   } catch (error) {
     if (error.response && error.response.status === 404) {
-      // Bin doesn't exist yet – create it
       await saveSubmissions([]);
       return [];
     }
@@ -50,7 +48,6 @@ async function getSubmissions() {
   }
 }
 
-// ─── Helper: Write submissions ──────────────────────────────
 async function saveSubmissions(submissions) {
   try {
     await axios.put(
@@ -72,7 +69,7 @@ async function saveSubmissions(submissions) {
 
 // ─── API Endpoints ──────────────────────────────────────────
 
-// 1. Health check / test
+// Health check
 app.get('/api/test', async (req, res) => {
   try {
     await getSubmissions();
@@ -82,7 +79,7 @@ app.get('/api/test', async (req, res) => {
   }
 });
 
-// 2. Submit new (existing)
+// Create a new submission (used by the form)
 app.post('/api/submit', async (req, res) => {
   try {
     const { fullName, address, country, email, countyCode } = req.body;
@@ -111,7 +108,7 @@ app.post('/api/submit', async (req, res) => {
     submissions.push(newEntry);
     await saveSubmissions(submissions);
 
-    // ── Send ntfy notification ──
+    // ntfy notification
     const viewUrl = `http://localhost:${PORT}/view.html?id=${id}`;
     const adminUrl = `http://localhost:${PORT}/admin.html`;
     const message = `📦 New submission from ${fullName}\nView: ${viewUrl}\nAdmin: ${adminUrl}`;
@@ -126,7 +123,7 @@ app.post('/api/submit', async (req, res) => {
   }
 });
 
-// 3. Get all submissions (used by admin panel)
+// Get all submissions (admin panel)
 app.get('/api/submissions', async (req, res) => {
   try {
     const submissions = await getSubmissions();
@@ -136,7 +133,7 @@ app.get('/api/submissions', async (req, res) => {
   }
 });
 
-// 4. Get a single submission (used by view.html)
+// Get a single submission by ID (view.html uses this)
 app.get('/api/submissions/:id', async (req, res) => {
   try {
     const submissions = await getSubmissions();
@@ -148,7 +145,7 @@ app.get('/api/submissions/:id', async (req, res) => {
   }
 });
 
-// 5. Approve a submission
+// Approve
 app.post('/api/submissions/:id/approve', async (req, res) => {
   try {
     const submissions = await getSubmissions();
@@ -164,7 +161,7 @@ app.post('/api/submissions/:id/approve', async (req, res) => {
   }
 });
 
-// 6. Decline a submission
+// Decline
 app.post('/api/submissions/:id/decline', async (req, res) => {
   try {
     const submissions = await getSubmissions();
@@ -180,7 +177,7 @@ app.post('/api/submissions/:id/decline', async (req, res) => {
   }
 });
 
-// 7. Delete a submission
+// Delete
 app.delete('/api/submissions/:id', async (req, res) => {
   try {
     const submissions = await getSubmissions();
@@ -195,8 +192,10 @@ app.delete('/api/submissions/:id', async (req, res) => {
   }
 });
 
-// ─── Catch‑all: serve index.html for root ──────────────────
-app.get('/', (req, res) => {
+// ─── Catch‑all: serve index.html for any unmatched route ──
+// This ensures that if someone navigates to a non‑existent route,
+// they get the submission form instead of a 404.
+app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
