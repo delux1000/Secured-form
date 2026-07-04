@@ -12,6 +12,7 @@
             margin: 0;
             padding: 0;
         }
+
         body {
             font-family: 'Inter', sans-serif;
             min-height: 100vh;
@@ -21,6 +22,7 @@
             background: #0b1120;
             padding: 24px;
         }
+
         .card {
             max-width: 700px;
             width: 100%;
@@ -32,123 +34,317 @@
             color: #fff;
             box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
         }
-        .card h1 {
-            font-size: 28px;
-            font-weight: 700;
-            margin-bottom: 24px;
+
+        .card-header {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 14px;
+            margin-bottom: 28px;
         }
-        .card h1 i {
+
+        .card-header i {
+            font-size: 30px;
             color: #7c3aed;
         }
+
+        .card-header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+        }
+
+        .detail-list {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
         .detail-row {
             display: flex;
-            padding: 12px 0;
+            padding: 14px 0;
             border-bottom: 1px solid rgba(255, 255, 255, 0.06);
         }
+
+        .detail-row:last-of-type {
+            border-bottom: none;
+        }
+
         .detail-label {
             width: 140px;
             font-weight: 600;
-            color: rgba(255, 255, 255, 0.5);
+            color: rgba(255, 255, 255, 0.45);
             flex-shrink: 0;
+            font-size: 14px;
         }
+
         .detail-value {
             color: #fff;
             word-break: break-word;
+            font-size: 15px;
+            font-weight: 500;
         }
-        .detail-value img {
-            max-width: 100%;
-            max-height: 300px;
-            border-radius: 16px;
-            border: 2px solid rgba(255, 255, 255, 0.15);
-            margin-top: 8px;
-        }
-        .back-link {
-            display: inline-block;
-            margin-top: 24px;
-            padding: 12px 24px;
-            background: rgba(255, 255, 255, 0.08);
-            border-radius: 14px;
-            color: rgba(255, 255, 255, 0.7);
-            text-decoration: none;
-            transition: background 0.25s;
-        }
-        .back-link:hover {
-            background: rgba(255, 255, 255, 0.15);
-            color: #fff;
-        }
-        .loading {
-            text-align: center;
-            padding: 60px 0;
-            color: rgba(255, 255, 255, 0.4);
-        }
-        .loading i {
-            font-size: 48px;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
+
         .status-badge {
             display: inline-block;
-            padding: 4px 16px;
+            padding: 4px 18px;
             border-radius: 20px;
             font-size: 13px;
             font-weight: 600;
             background: #f59e0b;
             color: #000;
+            text-transform: capitalize;
         }
+
         .status-badge.approved {
             background: #10b981;
+            color: #fff;
+        }
+
+        .status-badge.rejected {
+            background: #ef4444;
+            color: #fff;
+        }
+
+        .status-badge.pending {
+            background: #f59e0b;
+            color: #000;
+        }
+
+        .loading-state {
+            text-align: center;
+            padding: 60px 0;
+            color: rgba(255, 255, 255, 0.35);
+        }
+
+        .loading-state i {
+            font-size: 44px;
+            animation: spin 1s linear infinite;
+            display: block;
+            margin-bottom: 16px;
+        }
+
+        .loading-state span {
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .error-message {
+            padding: 20px 0;
+            color: #f87171;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        .error-message i {
+            margin-right: 10px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 0;
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .empty-state i {
+            font-size: 40px;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        /* subtle divider treatment */
+        .detail-row:first-of-type {
+            padding-top: 0;
+        }
+
+        @media (max-width: 600px) {
+            .card {
+                padding: 24px 20px;
+            }
+
+            .detail-row {
+                flex-direction: column;
+                gap: 4px;
+                padding: 16px 0;
+            }
+
+            .detail-label {
+                width: 100%;
+                font-size: 12px;
+                text-transform: uppercase;
+                letter-spacing: 0.4px;
+            }
+
+            .detail-value {
+                font-size: 15px;
+            }
+
+            .card-header h1 {
+                font-size: 22px;
+            }
         }
     </style>
 </head>
 <body>
+
     <div class="card" id="viewCard">
-        <h1><i class="fas fa-file-alt"></i> Submission Details</h1>
-        <div id="content">
-            <div class="loading"><i class="fas fa-spinner"></i><br />Loading...</div>
+        <!-- header -->
+        <div class="card-header">
+            <i class="fas fa-file-alt"></i>
+            <h1>Submission Details</h1>
         </div>
-        <a href="/admin.html" class="back-link"><i class="fas fa-arrow-left"></i> Back to Admin</a>
+
+        <!-- dynamic content -->
+        <div id="content">
+            <div class="loading-state">
+                <i class="fas fa-spinner"></i>
+                <span>Loading submission…</span>
+            </div>
+        </div>
     </div>
 
     <script>
-        async function fetchSubmission() {
-            const params = new URLSearchParams(window.location.search);
-            const id = params.get('id');
-            if (!id) {
-                document.getElementById('content').innerHTML = '<p style="color:#f87171;">No submission ID provided.</p>';
-                return;
+        (function() {
+            const contentEl = document.getElementById('content');
+
+            // ── helpers ──
+            function renderLoading() {
+                contentEl.innerHTML = `
+                        <div class="loading-state">
+                            <i class="fas fa-spinner"></i>
+                            <span>Loading submission…</span>
+                        </div>
+                    `;
             }
 
-            try {
-                const response = await fetch(`/api/submission/${id}`);
-                if (!response.ok) throw new Error('Not found');
-                const data = await response.json();
-
-                const content = document.getElementById('content');
-                const statusClass = data.status === 'approved' ? 'approved' : '';
-                content.innerHTML = `
-                    <div class="detail-row"><span class="detail-label">ID</span><span class="detail-value">${data.id}</span></div>
-                    <div class="detail-row"><span class="detail-label">Full Name</span><span class="detail-value">${data.fullName}</span></div>
-                    <div class="detail-row"><span class="detail-label">Address</span><span class="detail-value">${data.address}</span></div>
-                    <div class="detail-row"><span class="detail-label">Country</span><span class="detail-value">${data.country}</span></div>
-                    <div class="detail-row"><span class="detail-label">County Code</span><span class="detail-value">${data.countyCode}</span></div>
-                    <div class="detail-row"><span class="detail-label">Email</span><span class="detail-value">${data.email}</span></div>
-                    <div class="detail-row"><span class="detail-label">Status</span><span class="detail-value"><span class="status-badge ${statusClass}">${data.status}</span></span></div>
-                    <div class="detail-row"><span class="detail-label">Timestamp</span><span class="detail-value">${new Date(data.timestamp).toLocaleString()}</span></div>
-                    <div class="detail-row"><span class="detail-label">Image</span><span class="detail-value"><img src="data:image/jpeg;base64,${data.image}" alt="Uploaded" /></span></div>
-                `;
-            } catch (err) {
-                document.getElementById('content').innerHTML = `<p style="color:#f87171;">Error: ${err.message}</p>`;
+            function renderError(message) {
+                contentEl.innerHTML = `
+                        <div class="error-message">
+                            <i class="fas fa-exclamation-circle"></i> ${message}
+                        </div>
+                    `;
             }
-        }
 
-        fetchSubmission();
+            function renderEmpty() {
+                contentEl.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-inbox"></i>
+                            <span>No submission data available.</span>
+                        </div>
+                    `;
+            }
+
+            function getStatusBadgeClass(status) {
+                const s = (status || '').toLowerCase();
+                if (s === 'approved') return 'approved';
+                if (s === 'rejected') return 'rejected';
+                return 'pending';
+            }
+
+            function formatDate(timestamp) {
+                if (!timestamp) return '—';
+                try {
+                    return new Date(timestamp).toLocaleString(undefined, {
+                        year: 'numeric',
+                        month: 'short',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        second: '2-digit'
+                    });
+                } catch (_) {
+                    return String(timestamp);
+                }
+            }
+
+            function renderDetails(data) {
+                // build rows for all fields except 'image'
+                const fields = [
+                    { key: 'id', label: 'ID' },
+                    { key: 'fullName', label: 'Full Name' },
+                    { key: 'address', label: 'Address' },
+                    { key: 'country', label: 'Country' },
+                    { key: 'countyCode', label: 'County Code' },
+                    { key: 'email', label: 'Email' },
+                    { key: 'status', label: 'Status' },
+                    { key: 'timestamp', label: 'Timestamp' },
+                ];
+
+                let rowsHtml = '';
+                for (const field of fields) {
+                    let value = data[field.key] ?? '—';
+
+                    // special rendering for status
+                    if (field.key === 'status') {
+                        const badgeClass = getStatusBadgeClass(value);
+                        value = `<span class="status-badge ${badgeClass}">${value}</span>`;
+                    }
+
+                    // format timestamp
+                    if (field.key === 'timestamp') {
+                        value = formatDate(value);
+                    }
+
+                    rowsHtml += `
+                            <div class="detail-row">
+                                <span class="detail-label">${field.label}</span>
+                                <span class="detail-value">${value}</span>
+                            </div>
+                        `;
+                }
+
+                contentEl.innerHTML = `<div class="detail-list">${rowsHtml}</div>`;
+            }
+
+            // ── main fetch ──
+            async function fetchSubmission() {
+                const params = new URLSearchParams(window.location.search);
+                const id = params.get('id');
+
+                if (!id) {
+                    renderError('No submission ID provided.');
+                    return;
+                }
+
+                renderLoading();
+
+                try {
+                    const response = await fetch(`/api/submission/${id}`);
+
+                    if (!response.ok) {
+                        if (response.status === 404) {
+                            renderError('Submission not found.');
+                        } else {
+                            renderError(`Server error (${response.status}).`);
+                        }
+                        return;
+                    }
+
+                    const data = await response.json();
+
+                    // guard: if data is empty or missing expected fields
+                    if (!data || typeof data !== 'object' || Object.keys(data).length === 0) {
+                        renderEmpty();
+                        return;
+                    }
+
+                    renderDetails(data);
+
+                } catch (err) {
+                    console.error('Fetch error:', err);
+                    renderError('Unable to load submission. Please try again later.');
+                }
+            }
+
+            // ── go ──
+            fetchSubmission();
+        })();
     </script>
+
 </body>
 </html>
