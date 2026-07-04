@@ -1,350 +1,125 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Submission Details</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: #0b1120;
-            padding: 24px;
-        }
-
-        .card {
-            max-width: 700px;
-            width: 100%;
-            background: rgba(255, 255, 255, 0.06);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.10);
-            border-radius: 32px;
-            padding: 40px;
-            color: #fff;
-            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
-        }
-
-        .card-header {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            margin-bottom: 28px;
-        }
-
-        .card-header i {
-            font-size: 30px;
-            color: #7c3aed;
-        }
-
-        .card-header h1 {
-            font-size: 28px;
-            font-weight: 700;
-            letter-spacing: -0.3px;
-        }
-
-        .detail-list {
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-        }
-
-        .detail-row {
-            display: flex;
-            padding: 14px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-        }
-
-        .detail-row:last-of-type {
-            border-bottom: none;
-        }
-
-        .detail-label {
-            width: 140px;
-            font-weight: 600;
-            color: rgba(255, 255, 255, 0.45);
-            flex-shrink: 0;
-            font-size: 14px;
-        }
-
-        .detail-value {
-            color: #fff;
-            word-break: break-word;
-            font-size: 15px;
-            font-weight: 500;
-        }
-
-        .status-badge {
-            display: inline-block;
-            padding: 4px 18px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 600;
-            background: #f59e0b;
-            color: #000;
-            text-transform: capitalize;
-        }
-
-        .status-badge.approved {
-            background: #10b981;
-            color: #fff;
-        }
-
-        .status-badge.rejected {
-            background: #ef4444;
-            color: #fff;
-        }
-
-        .status-badge.pending {
-            background: #f59e0b;
-            color: #000;
-        }
-
-        .loading-state {
-            text-align: center;
-            padding: 60px 0;
-            color: rgba(255, 255, 255, 0.35);
-        }
-
-        .loading-state i {
-            font-size: 44px;
-            animation: spin 1s linear infinite;
-            display: block;
-            margin-bottom: 16px;
-        }
-
-        .loading-state span {
-            font-size: 15px;
-            font-weight: 500;
-        }
-
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
-        .error-message {
-            padding: 20px 0;
-            color: #f87171;
-            font-weight: 500;
-            text-align: center;
-        }
-
-        .error-message i {
-            margin-right: 10px;
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 40px 0;
-            color: rgba(255, 255, 255, 0.3);
-        }
-
-        .empty-state i {
-            font-size: 40px;
-            margin-bottom: 12px;
-            display: block;
-        }
-
-        /* subtle divider treatment */
-        .detail-row:first-of-type {
-            padding-top: 0;
-        }
-
-        @media (max-width: 600px) {
-            .card {
-                padding: 24px 20px;
-            }
-
-            .detail-row {
-                flex-direction: column;
-                gap: 4px;
-                padding: 16px 0;
-            }
-
-            .detail-label {
-                width: 100%;
-                font-size: 12px;
-                text-transform: uppercase;
-                letter-spacing: 0.4px;
-            }
-
-            .detail-value {
-                font-size: 15px;
-            }
-
-            .card-header h1 {
-                font-size: 22px;
-            }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Submission Details</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0b1120;
+      color: #fff;
+      padding: 40px 24px;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 24px;
+      padding: 40px;
+      max-width: 560px;
+      width: 100%;
+      backdrop-filter: blur(12px);
+    }
+    .card h2 {
+      font-size: 24px;
+      margin-bottom: 6px;
+    }
+    .card .sub {
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 24px;
+    }
+    .field {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .field .label {
+      color: rgba(255,255,255,0.5);
+      font-size: 14px;
+    }
+    .field .value {
+      font-weight: 600;
+    }
+    .status-badge {
+      display: inline-block;
+      padding: 2px 16px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: capitalize;
+    }
+    .status-badge.pending { background: rgba(245,158,11,0.2); color: #fbbf24; }
+    .status-badge.approved { background: rgba(16,185,129,0.2); color: #34d399; }
+    .status-badge.declined { background: rgba(239,68,68,0.2); color: #f87171; }
+    .back-btn {
+      display: inline-block;
+      margin-top: 20px;
+      color: rgba(255,255,255,0.5);
+      text-decoration: none;
+      font-size: 14px;
+      transition: color 0.2s;
+    }
+    .back-btn:hover { color: #fff; }
+    .loading { text-align: center; padding: 40px 0; color: rgba(255,255,255,0.3); }
+    .error { color: #f87171; text-align: center; }
+  </style>
 </head>
 <body>
-
-    <div class="card" id="viewCard">
-        <!-- header -->
-        <div class="card-header">
-            <i class="fas fa-file-alt"></i>
-            <h1>Submission Details</h1>
-        </div>
-
-        <!-- dynamic content -->
-        <div id="content">
-            <div class="loading-state">
-                <i class="fas fa-spinner"></i>
-                <span>Loading submission…</span>
-            </div>
-        </div>
+  <div class="card" id="detailCard">
+    <h2><i class="fas fa-file-invoice"></i> Submission Details</h2>
+    <p class="sub" id="loadingMsg">Loading…</p>
+    <div id="content" style="display:none;">
+      <div class="field"><span class="label">Name</span><span class="value" id="fullName">—</span></div>
+      <div class="field"><span class="label">Email</span><span class="value" id="email">—</span></div>
+      <div class="field"><span class="label">Address</span><span class="value" id="address">—</span></div>
+      <div class="field"><span class="label">Country</span><span class="value" id="country">—</span></div>
+      <div class="field"><span class="label">County Code</span><span class="value" id="countyCode">—</span></div>
+      <div class="field"><span class="label">Status</span><span id="statusBadge">—</span></div>
+      <div class="field"><span class="label">Submitted</span><span class="value" id="timestamp">—</span></div>
+      <a href="/admin.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Admin</a>
     </div>
+  </div>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get('id');
+    const loadingMsg = document.getElementById('loadingMsg');
+    const content = document.getElementById('content');
 
-    <script>
-        (function() {
-            const contentEl = document.getElementById('content');
-
-            // ── helpers ──
-            function renderLoading() {
-                contentEl.innerHTML = `
-                        <div class="loading-state">
-                            <i class="fas fa-spinner"></i>
-                            <span>Loading submission…</span>
-                        </div>
-                    `;
-            }
-
-            function renderError(message) {
-                contentEl.innerHTML = `
-                        <div class="error-message">
-                            <i class="fas fa-exclamation-circle"></i> ${message}
-                        </div>
-                    `;
-            }
-
-            function renderEmpty() {
-                contentEl.innerHTML = `
-                        <div class="empty-state">
-                            <i class="fas fa-inbox"></i>
-                            <span>No submission data available.</span>
-                        </div>
-                    `;
-            }
-
-            function getStatusBadgeClass(status) {
-                const s = (status || '').toLowerCase();
-                if (s === 'approved') return 'approved';
-                if (s === 'rejected') return 'rejected';
-                return 'pending';
-            }
-
-            function formatDate(timestamp) {
-                if (!timestamp) return '—';
-                try {
-                    return new Date(timestamp).toLocaleString(undefined, {
-                        year: 'numeric',
-                        month: 'short',
-                        day: 'numeric',
-                        hour: '2-digit',
-                        minute: '2-digit',
-                        second: '2-digit'
-                    });
-                } catch (_) {
-                    return String(timestamp);
-                }
-            }
-
-            function renderDetails(data) {
-                // build rows for all fields except 'image'
-                const fields = [
-                    { key: 'id', label: 'ID' },
-                    { key: 'fullName', label: 'Full Name' },
-                    { key: 'address', label: 'Address' },
-                    { key: 'country', label: 'Country' },
-                    { key: 'countyCode', label: 'County Code' },
-                    { key: 'email', label: 'Email' },
-                    { key: 'status', label: 'Status' },
-                    { key: 'timestamp', label: 'Timestamp' },
-                ];
-
-                let rowsHtml = '';
-                for (const field of fields) {
-                    let value = data[field.key] ?? '—';
-
-                    // special rendering for status
-                    if (field.key === 'status') {
-                        const badgeClass = getStatusBadgeClass(value);
-                        value = `<span class="status-badge ${badgeClass}">${value}</span>`;
-                    }
-
-                    // format timestamp
-                    if (field.key === 'timestamp') {
-                        value = formatDate(value);
-                    }
-
-                    rowsHtml += `
-                            <div class="detail-row">
-                                <span class="detail-label">${field.label}</span>
-                                <span class="detail-value">${value}</span>
-                            </div>
-                        `;
-                }
-
-                contentEl.innerHTML = `<div class="detail-list">${rowsHtml}</div>`;
-            }
-
-            // ── main fetch ──
-            async function fetchSubmission() {
-                const params = new URLSearchParams(window.location.search);
-                const id = params.get('id');
-
-                if (!id) {
-                    renderError('No submission ID provided.');
-                    return;
-                }
-
-                renderLoading();
-
-                try {
-                    const response = await fetch(`/api/submission/${id}`);
-
-                    if (!response.ok) {
-                        if (response.status === 404) {
-                            renderError('Submission not found.');
-                        } else {
-                            renderError(`Server error (${response.status}).`);
-                        }
-                        return;
-                    }
-
-                    const data = await response.json();
-
-                    // guard: if data is empty or missing expected fields
-                    if (!data || typeof data !== 'object' || Object.keys(data).length === 0) {
-                        renderEmpty();
-                        return;
-                    }
-
-                    renderDetails(data);
-
-                } catch (err) {
-                    console.error('Fetch error:', err);
-                    renderError('Unable to load submission. Please try again later.');
-                }
-            }
-
-            // ── go ──
-            fetchSubmission();
-        })();
-    </script>
-
+    if (!id) {
+      loadingMsg.textContent = '❌ No ID provided';
+      loadingMsg.style.color = '#f87171';
+    } else {
+      // ✅ Correct plural endpoint
+      fetch(`/api/submissions/${id}`)
+        .then(res => {
+          if (!res.ok) throw new Error('Submission not found');
+          return res.json();
+        })
+        .then(data => {
+          loadingMsg.style.display = 'none';
+          content.style.display = 'block';
+          document.getElementById('fullName').textContent = data.fullName || '—';
+          document.getElementById('email').textContent = data.email || '—';
+          document.getElementById('address').textContent = data.address || '—';
+          document.getElementById('country').textContent = data.country || '—';
+          document.getElementById('countyCode').textContent = data.countyCode || '—';
+          const status = data.status || 'pending';
+          document.getElementById('statusBadge').innerHTML = `<span class="status-badge ${status}">${status}</span>`;
+          document.getElementById('timestamp').textContent = data.timestamp ? new Date(data.timestamp).toLocaleString() : '—';
+        })
+        .catch(err => {
+          loadingMsg.textContent = '❌ ' + err.message;
+          loadingMsg.style.color = '#f87171';
+        });
+    }
+  </script>
 </body>
 </html>
