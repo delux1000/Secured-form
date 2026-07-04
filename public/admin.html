@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Admin – All Submissions</title>
+    <title>Admin – Manage Submissions</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet" />
     <style>
+        /* ── Reset & Base ── */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -18,139 +19,359 @@
             color: #fff;
             padding: 32px 24px;
             min-height: 100vh;
+            background-image: radial-gradient(ellipse at 20% 50%, rgba(124, 58, 237, 0.08) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 20%, rgba(16, 185, 129, 0.05) 0%, transparent 50%);
         }
+
         .container {
-            max-width: 1200px;
+            max-width: 1280px;
             margin: 0 auto;
         }
-        h1 {
-            font-size: 32px;
-            font-weight: 700;
-            margin-bottom: 8px;
+
+        /* ── Header ── */
+        .header {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px 20px;
+            margin-bottom: 6px;
+        }
+        .header h1 {
+            font-size: 30px;
+            font-weight: 800;
             display: flex;
             align-items: center;
             gap: 12px;
+            letter-spacing: -0.5px;
         }
-        h1 i {
+        .header h1 i {
             color: #7c3aed;
+            background: rgba(124, 58, 237, 0.15);
+            padding: 8px;
+            border-radius: 14px;
+            font-size: 22px;
+        }
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-left: auto;
+            flex-wrap: wrap;
+        }
+        .header-actions .btn {
+            padding: 8px 18px;
+            border-radius: 12px;
+            border: none;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+            text-decoration: none;
+            background: rgba(255, 255, 255, 0.07);
+            color: rgba(255, 255, 255, 0.7);
+        }
+        .header-actions .btn:hover {
+            background: rgba(255, 255, 255, 0.14);
+            color: #fff;
+        }
+        .header-actions .btn-primary {
+            background: #7c3aed;
+            color: #fff;
+        }
+        .header-actions .btn-primary:hover {
+            background: #6d28d9;
+            transform: translateY(-1px);
+            box-shadow: 0 8px 24px rgba(124, 58, 237, 0.3);
         }
         .subtitle {
-            color: rgba(255, 255, 255, 0.4);
-            margin-bottom: 32px;
+            color: rgba(255, 255, 255, 0.35);
+            margin-bottom: 28px;
+            font-size: 15px;
+            font-weight: 400;
         }
-        .table-wrap {
+
+        /* ── Stats Bar ── */
+        .stats {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-bottom: 28px;
+        }
+        .stat-card {
             background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 14px;
+            padding: 12px 22px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            backdrop-filter: blur(8px);
+            font-size: 14px;
+        }
+        .stat-card .num {
+            font-weight: 700;
+            font-size: 20px;
+            letter-spacing: -0.3px;
+        }
+        .stat-card .label {
+            color: rgba(255, 255, 255, 0.4);
+            font-weight: 500;
+        }
+        .stat-card .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        .dot.total {
+            background: #7c3aed;
+        }
+        .dot.pending {
+            background: #f59e0b;
+        }
+        .dot.approved {
+            background: #10b981;
+        }
+        .dot.declined {
+            background: #ef4444;
+        }
+
+        /* ── Table ── */
+        .table-wrap {
+            background: rgba(255, 255, 255, 0.03);
             border-radius: 20px;
-            overflow-x: auto;
+            overflow: hidden;
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.06);
-            padding: 4px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+        .table-scroll {
+            overflow-x: auto;
+            padding: 2px;
         }
         table {
             width: 100%;
             border-collapse: collapse;
             font-size: 14px;
+            min-width: 780px;
         }
         th {
             text-align: left;
             padding: 16px 20px;
-            background: rgba(255, 255, 255, 0.04);
-            color: rgba(255, 255, 255, 0.6);
+            background: rgba(255, 255, 255, 0.03);
+            color: rgba(255, 255, 255, 0.5);
             font-weight: 600;
             text-transform: uppercase;
-            font-size: 12px;
-            letter-spacing: 0.5px;
+            font-size: 11px;
+            letter-spacing: 0.6px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
         td {
             padding: 14px 20px;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
             vertical-align: middle;
         }
-        td .status {
-            display: inline-block;
-            padding: 2px 12px;
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: 600;
-            background: #f59e0b;
-            color: #000;
+        tr:last-child td {
+            border-bottom: none;
         }
-        td .status.approved {
-            background: #10b981;
+        tr:hover td {
+            background: rgba(255, 255, 255, 0.02);
         }
-        td .status.pending {
-            background: #f59e0b;
-        }
-        .view-btn {
+
+        /* ── Status Badge ── */
+        .badge {
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            padding: 6px 16px;
-            background: #7c3aed;
+            padding: 3px 14px 3px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: capitalize;
+            letter-spacing: 0.3px;
+        }
+        .badge .dot-sm {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        .badge.pending {
+            background: rgba(245, 158, 11, 0.18);
+            color: #fbbf24;
+        }
+        .badge.pending .dot-sm {
+            background: #f59e0b;
+        }
+        .badge.approved {
+            background: rgba(16, 185, 129, 0.15);
+            color: #34d399;
+        }
+        .badge.approved .dot-sm {
+            background: #10b981;
+        }
+        .badge.declined {
+            background: rgba(239, 68, 68, 0.15);
+            color: #f87171;
+        }
+        .badge.declined .dot-sm {
+            background: #ef4444;
+        }
+
+        /* ── Action Buttons ── */
+        .actions {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            flex-wrap: wrap;
+        }
+        .actions .act-btn {
+            width: 32px;
+            height: 32px;
             border-radius: 10px;
-            color: #fff;
-            text-decoration: none;
-            font-weight: 500;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
             font-size: 13px;
-            transition: background 0.2s;
+            transition: all 0.2s;
+            background: transparent;
+            color: rgba(255, 255, 255, 0.4);
+            position: relative;
         }
-        .view-btn:hover {
-            background: #6d28d9;
+        .actions .act-btn:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: #fff;
+            transform: scale(1.05);
         }
+        .actions .act-btn:active {
+            transform: scale(0.95);
+        }
+        .actions .act-btn .tooltip {
+            position: absolute;
+            bottom: calc(100% + 8px);
+            left: 50%;
+            transform: translateX(-50%) scale(0.8);
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(12px);
+            color: #fff;
+            padding: 4px 12px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 500;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.2s;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        .actions .act-btn:hover .tooltip {
+            opacity: 1;
+            transform: translateX(-50%) scale(1);
+        }
+
+        .actions .act-view {
+            color: #7c3aed;
+        }
+        .actions .act-view:hover {
+            background: rgba(124, 58, 237, 0.15);
+            color: #a78bfa;
+        }
+
+        .actions .act-approve {
+            color: #34d399;
+        }
+        .actions .act-approve:hover {
+            background: rgba(16, 185, 129, 0.15);
+            color: #6ee7b7;
+        }
+        .actions .act-approve:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .actions .act-decline {
+            color: #fbbf24;
+        }
+        .actions .act-decline:hover {
+            background: rgba(245, 158, 11, 0.15);
+            color: #fcd34d;
+        }
+        .actions .act-decline:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .actions .act-delete {
+            color: #f87171;
+        }
+        .actions .act-delete:hover {
+            background: rgba(239, 68, 68, 0.15);
+            color: #fca5a5;
+        }
+        .actions .act-delete:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* ── Empty State ── */
         .empty {
             text-align: center;
             padding: 60px 20px;
-            color: rgba(255, 255, 255, 0.3);
+            color: rgba(255, 255, 255, 0.25);
         }
         .empty i {
-            font-size: 48px;
+            font-size: 44px;
             display: block;
-            margin-bottom: 12px;
+            margin-bottom: 14px;
+            opacity: 0.5;
         }
-        .refresh-btn {
-            margin-left: 16px;
-            padding: 6px 16px;
-            background: rgba(255, 255, 255, 0.08);
-            border: none;
-            border-radius: 10px;
-            color: #fff;
-            cursor: pointer;
-            font-size: 13px;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            transition: background 0.2s;
+        .empty p {
+            font-size: 15px;
         }
-        .refresh-btn:hover {
-            background: rgba(255, 255, 255, 0.16);
-        }
-        .toast {
+
+        /* ── Toast ── */
+        .toast-container {
             position: fixed;
             bottom: 30px;
             right: 30px;
-            z-index: 2000;
-            padding: 14px 24px;
+            z-index: 3000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 420px;
+            width: 100%;
+        }
+        .toast {
+            padding: 14px 22px;
             border-radius: 16px;
-            background: rgba(20, 20, 50, 0.92);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(16, 18, 34, 0.92);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.07);
             color: #fff;
             font-size: 14px;
             display: flex;
             align-items: center;
             gap: 12px;
-            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4);
-            transform: translateY(120px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            transform: translateX(calc(100% + 40px));
             opacity: 0;
             transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-            max-width: 420px;
         }
         .toast.show {
-            transform: translateY(0);
+            transform: translateX(0);
             opacity: 1;
         }
         .toast i {
             font-size: 20px;
+            flex-shrink: 0;
         }
         .toast.success i {
             color: #34d399;
@@ -158,111 +379,546 @@
         .toast.error i {
             color: #f87171;
         }
-        @media (max-width: 700px) {
-            th,
-            td {
-                padding: 10px 12px;
+        .toast.warning i {
+            color: #fbbf24;
+        }
+        .toast .toast-msg {
+            flex: 1;
+        }
+        .toast .toast-close {
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            font-size: 16px;
+            padding: 0 4px;
+            transition: color 0.2s;
+        }
+        .toast .toast-close:hover {
+            color: #fff;
+        }
+
+        /* ── Modal (Delete Confirmation) ── */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 4000;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        .modal {
+            background: rgba(20, 22, 40, 0.96);
+            backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            padding: 32px 36px;
+            max-width: 440px;
+            width: 100%;
+            transform: scale(0.95) translateY(20px);
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.6);
+        }
+        .modal-overlay.active .modal {
+            transform: scale(1) translateY(0);
+        }
+        .modal .modal-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: rgba(239, 68, 68, 0.12);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            color: #f87171;
+            margin-bottom: 16px;
+        }
+        .modal h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+        .modal p {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+        .modal p strong {
+            color: #fff;
+            font-weight: 600;
+        }
+        .modal .modal-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+        .modal .modal-actions .btn {
+            padding: 10px 24px;
+            border-radius: 12px;
+            border: none;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .modal .modal-actions .btn-cancel {
+            background: rgba(255, 255, 255, 0.06);
+            color: rgba(255, 255, 255, 0.6);
+        }
+        .modal .modal-actions .btn-cancel:hover {
+            background: rgba(255, 255, 255, 0.12);
+            color: #fff;
+        }
+        .modal .modal-actions .btn-danger {
+            background: #dc2626;
+            color: #fff;
+        }
+        .modal .modal-actions .btn-danger:hover {
+            background: #b91c1c;
+            transform: translateY(-1px);
+            box-shadow: 0 8px 24px rgba(220, 38, 38, 0.3);
+        }
+        .modal .modal-actions .btn-danger:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 820px) {
+            body {
+                padding: 20px 16px;
+            }
+            .header h1 {
+                font-size: 24px;
+            }
+            .header h1 i {
+                font-size: 18px;
+                padding: 6px;
+            }
+            .header-actions .btn {
+                padding: 6px 14px;
                 font-size: 12px;
             }
-            .view-btn {
-                padding: 4px 10px;
-                font-size: 11px;
+            .stats .stat-card {
+                padding: 10px 16px;
+                font-size: 13px;
             }
-            h1 {
-                font-size: 24px;
+            .stats .stat-card .num {
+                font-size: 17px;
+            }
+            th,
+            td {
+                padding: 10px 14px;
+                font-size: 13px;
+            }
+            .actions .act-btn {
+                width: 28px;
+                height: 28px;
+                font-size: 12px;
+            }
+            .modal {
+                padding: 24px 20px;
+            }
+        }
+        @media (max-width: 500px) {
+            .header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .header-actions {
+                margin-left: 0;
+            }
+            .stats {
+                gap: 8px;
+            }
+            .stats .stat-card {
+                flex: 1;
+                min-width: 80px;
+                padding: 8px 12px;
+                font-size: 12px;
+            }
+            .stats .stat-card .num {
+                font-size: 15px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 12px;">
-            <h1><i class="fas fa-users-cog"></i> Admin Panel</h1>
-            <button class="refresh-btn" id="refreshBtn"><i class="fas fa-sync-alt"></i> Refresh</button>
-            <a href="/" style="margin-left: auto; color: rgba(255,255,255,0.5); text-decoration: none; font-size: 14px;"><i class="fas fa-plus-circle"></i> New Submission</a>
-        </div>
-        <p class="subtitle">All package submissions are listed below. Click "View" to see full details.</p>
 
+    <div class="container">
+
+        <!-- ─── HEADER ─── -->
+        <div class="header">
+            <h1><i class="fas fa-shield-halved"></i> Admin Panel</h1>
+            <div class="header-actions">
+                <button class="btn" id="refreshBtn"><i class="fas fa-sync-alt"></i> Refresh</button>
+                <a href="/" class="btn btn-primary"><i class="fas fa-plus-circle"></i> New Submission</a>
+            </div>
+        </div>
+        <p class="subtitle">Review, approve, or decline package submissions. All changes are reflected immediately.</p>
+
+        <!-- ─── STATS ─── -->
+        <div class="stats" id="statsBar">
+            <div class="stat-card"><span class="dot total"></span> Total <span class="num" id="statTotal">0</span></div>
+            <div class="stat-card"><span class="dot pending"></span> Pending <span class="num" id="statPending">0</span></div>
+            <div class="stat-card"><span class="dot approved"></span> Approved <span class="num" id="statApproved">0</span></div>
+            <div class="stat-card"><span class="dot declined"></span> Declined <span class="num" id="statDeclined">0</span></div>
+        </div>
+
+        <!-- ─── TABLE ─── -->
         <div class="table-wrap">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Country</th>
-                        <th>Status</th>
-                        <th>Submitted</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody id="submissionsBody">
-                    <tr><td colspan="6" class="empty"><i class="fas fa-spinner fa-spin"></i> Loading...</td></tr>
-                </tbody>
-            </table>
+            <div class="table-scroll">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Country</th>
+                            <th>Status</th>
+                            <th>Submitted</th>
+                            <th style="text-align:center;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="submissionsBody">
+                        <tr><td colspan="6" class="empty"><i class="fas fa-spinner fa-spin"></i> Loading submissions…</td></tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 
-    <div class="toast" id="toast"><i class="fas fa-check-circle"></i><span id="toastMessage"></span></div>
+    <!-- ─── TOAST CONTAINER ─── -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- ─── DELETE MODAL ─── -->
+    <div class="modal-overlay" id="deleteModal">
+        <div class="modal">
+            <div class="modal-icon"><i class="fas fa-trash-can"></i></div>
+            <h3>Delete Submission</h3>
+            <p>Are you sure you want to delete <strong id="deleteName">—</strong>'s submission? This action <strong>cannot</strong> be undone.</p>
+            <div class="modal-actions">
+                <button class="btn btn-cancel" id="modalCancel">Cancel</button>
+                <button class="btn btn-danger" id="modalConfirm"><i class="fas fa-trash-can"></i> Delete</button>
+            </div>
+        </div>
+    </div>
 
     <script>
-        async function fetchSubmissions() {
-            const tbody = document.getElementById('submissionsBody');
-            try {
-                const res = await fetch('/api/submissions');
-                if (!res.ok) throw new Error('Failed to fetch');
-                const data = await res.json();
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        //  STATE
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        let submissions = [];
+        let deleteTargetId = null;
+        let isProcessing = false;
 
-                if (data.length === 0) {
-                    tbody.innerHTML = `<tr><td colspan="6" class="empty"><i class="fas fa-box-open"></i> No submissions yet.</td></tr>`;
-                    return;
-                }
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        //  DOM REFS
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        const tbody = document.getElementById('submissionsBody');
+        const statTotal = document.getElementById('statTotal');
+        const statPending = document.getElementById('statPending');
+        const statApproved = document.getElementById('statApproved');
+        const statDeclined = document.getElementById('statDeclined');
+        const refreshBtn = document.getElementById('refreshBtn');
+        const deleteModal = document.getElementById('deleteModal');
+        const deleteName = document.getElementById('deleteName');
+        const modalCancel = document.getElementById('modalCancel');
+        const modalConfirm = document.getElementById('modalConfirm');
+        const toastContainer = document.getElementById('toastContainer');
 
-                let html = '';
-                data.forEach(item => {
-                    const statusClass = item.status === 'approved' ? 'approved' : 'pending';
-                    const date = new Date(item.timestamp).toLocaleDateString() + ' ' + new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                    html += `
-                        <tr>
-                            <td><strong>${escapeHtml(item.fullName)}</strong></td>
-                            <td>${escapeHtml(item.email)}</td>
-                            <td>${escapeHtml(item.country)}</td>
-                            <td><span class="status ${statusClass}">${item.status}</span></td>
-                            <td style="font-size:12px;color:rgba(255,255,255,0.6);">${date}</td>
-                            <td><a href="/view.html?id=${item.id}" class="view-btn"><i class="fas fa-eye"></i> View</a></td>
-                        </tr>
-                    `;
-                });
-                tbody.innerHTML = html;
-            } catch (err) {
-                tbody.innerHTML = `<tr><td colspan="6" style="color:#f87171;text-align:center;">Error: ${err.message}</td></tr>`;
-                showToast('Failed to load submissions', 'error');
-            }
-        }
-
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        //  HELPERS
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         function escapeHtml(text) {
+            if (!text) return '';
             const div = document.createElement('div');
             div.textContent = text;
             return div.innerHTML;
         }
 
-        function showToast(message, type = 'success') {
-            const toast = document.getElementById('toast');
-            const msg = document.getElementById('toastMessage');
-            const icon = toast.querySelector('i');
-            msg.textContent = message;
-            toast.className = 'toast ' + type;
-            icon.className = type === 'success' ? 'fas fa-check-circle' : 'fas fa-exclamation-circle';
-            toast.classList.add('show');
-            clearTimeout(toast._timer);
-            toast._timer = setTimeout(() => toast.classList.remove('show'), 4000);
+        function formatDate(ts) {
+            if (!ts) return '—';
+            const d = new Date(ts);
+            return d.toLocaleDateString() + ' ' + d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
         }
 
-        document.getElementById('refreshBtn').addEventListener('click', () => {
-            fetchSubmissions();
-            showToast('Refreshed', 'success');
+        function getStatusBadge(status) {
+            const map = {
+                'pending': 'pending',
+                'approved': 'approved',
+                'declined': 'declined'
+            };
+            const cls = map[status] || 'pending';
+            return `<span class="badge ${cls}"><span class="dot-sm"></span>${status}</span>`;
+        }
+
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        //  TOAST
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        function showToast(message, type = 'success') {
+            const icons = {
+                success: 'fa-check-circle',
+                error: 'fa-circle-exclamation',
+                warning: 'fa-triangle-exclamation'
+            };
+            const icon = icons[type] || icons.success;
+            const el = document.createElement('div');
+            el.className = `toast ${type}`;
+            el.innerHTML = `
+                <i class="fas ${icon}"></i>
+                <span class="toast-msg">${escapeHtml(message)}</span>
+                <button class="toast-close"><i class="fas fa-xmark"></i></button>
+            `;
+            toastContainer.appendChild(el);
+
+            // Trigger show
+            requestAnimationFrame(() => el.classList.add('show'));
+
+            // Auto dismiss
+            const timer = setTimeout(() => {
+                el.classList.remove('show');
+                setTimeout(() => el.remove(), 500);
+            }, 4500);
+
+            // Close button
+            el.querySelector('.toast-close').addEventListener('click', () => {
+                clearTimeout(timer);
+                el.classList.remove('show');
+                setTimeout(() => el.remove(), 500);
+            });
+
+            return el;
+        }
+
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        //  FETCH SUBMISSIONS
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        async function fetchSubmissions() {
+            try {
+                const res = await fetch('/api/submissions');
+                if (!res.ok) throw new Error('Failed to fetch submissions');
+                submissions = await res.json();
+                renderTable();
+                updateStats();
+            } catch (err) {
+                tbody.innerHTML = `<tr><td colspan="6" style="color:#f87171;text-align:center;padding:40px;">
+                    <i class="fas fa-circle-exclamation" style="font-size:24px;display:block;margin-bottom:8px;"></i>
+                    Error: ${escapeHtml(err.message)}
+                </td></tr>`;
+                showToast('Failed to load submissions: ' + err.message, 'error');
+            }
+        }
+
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        //  RENDER
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        function renderTable() {
+            if (!submissions.length) {
+                tbody.innerHTML = `<tr><td colspan="6" class="empty">
+                    <i class="fas fa-inbox"></i>
+                    <p>No submissions yet. Be the first!</p>
+                </td></tr>`;
+                return;
+            }
+
+            let html = '';
+            for (const item of submissions) {
+                const id = item.id || item._id;
+                const name = item.fullName || item.name || '—';
+                const email = item.email || '—';
+                const country = item.country || '—';
+                const status = item.status || 'pending';
+                const date = formatDate(item.timestamp || item.createdAt);
+
+                html += `
+                    <tr data-id="${escapeHtml(id)}">
+                        <td><strong>${escapeHtml(name)}</strong></td>
+                        <td>${escapeHtml(email)}</td>
+                        <td>${escapeHtml(country)}</td>
+                        <td>${getStatusBadge(status)}</td>
+                        <td style="font-size:12px;color:rgba(255,255,255,0.5);">${date}</td>
+                        <td>
+                            <div class="actions">
+                                <a href="/view.html?id=${encodeURIComponent(id)}" class="act-btn act-view" title="View details">
+                                    <i class="fas fa-eye"></i>
+                                    <span class="tooltip">View</span>
+                                </a>
+                                <button class="act-btn act-approve" data-id="${escapeHtml(id)}" title="Approve" ${status === 'approved' ? 'disabled' : ''}>
+                                    <i class="fas fa-check"></i>
+                                    <span class="tooltip">Approve</span>
+                                </button>
+                                <button class="act-btn act-decline" data-id="${escapeHtml(id)}" title="Decline" ${status === 'declined' ? 'disabled' : ''}>
+                                    <i class="fas fa-xmark"></i>
+                                    <span class="tooltip">Decline</span>
+                                </button>
+                                <button class="act-btn act-delete" data-id="${escapeHtml(id)}" title="Delete">
+                                    <i class="fas fa-trash-can"></i>
+                                    <span class="tooltip">Delete</span>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }
+            tbody.innerHTML = html;
+
+            // ── Attach event listeners ──
+            tbody.querySelectorAll('.act-approve').forEach(btn => {
+                btn.addEventListener('click', () => handleAction(btn.dataset.id, 'approve'));
+            });
+            tbody.querySelectorAll('.act-decline').forEach(btn => {
+                btn.addEventListener('click', () => handleAction(btn.dataset.id, 'decline'));
+            });
+            tbody.querySelectorAll('.act-delete').forEach(btn => {
+                btn.addEventListener('click', () => openDeleteModal(btn.dataset.id));
+            });
+        }
+
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        //  UPDATE STATS
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        function updateStats() {
+            const total = submissions.length;
+            const pending = submissions.filter(s => (s.status || 'pending') === 'pending').length;
+            const approved = submissions.filter(s => s.status === 'approved').length;
+            const declined = submissions.filter(s => s.status === 'declined').length;
+
+            statTotal.textContent = total;
+            statPending.textContent = pending;
+            statApproved.textContent = approved;
+            statDeclined.textContent = declined;
+        }
+
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        //  HANDLE ACTION (Approve / Decline)
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        async function handleAction(id, action) {
+            if (isProcessing) return;
+            if (!id) return;
+
+            isProcessing = true;
+
+            // Disable all action buttons for this row
+            const row = tbody.querySelector(`tr[data-id="${id}"]`);
+            if (row) {
+                row.querySelectorAll('.act-btn').forEach(b => b.disabled = true);
+            }
+
+            try {
+                const res = await fetch(`/api/submissions/${id}/${action}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+
+                if (!res.ok) {
+                    const errData = await res.json().catch(() => ({}));
+                    throw new Error(errData.message || `Failed to ${action}`);
+                }
+
+                const result = await res.json();
+                showToast(`✅ Submission ${action}d successfully!`, 'success');
+
+                // Refresh the list
+                await fetchSubmissions();
+
+            } catch (err) {
+                showToast(`❌ ${err.message}`, 'error');
+                // Re-enable buttons
+                if (row) {
+                    row.querySelectorAll('.act-btn').forEach(b => b.disabled = false);
+                }
+            } finally {
+                isProcessing = false;
+            }
+        }
+
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        //  DELETE MODAL
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        function openDeleteModal(id) {
+            if (isProcessing) return;
+            const item = submissions.find(s => (s.id || s._id) === id);
+            if (!item) {
+                showToast('Submission not found', 'error');
+                return;
+            }
+            deleteTargetId = id;
+            const name = item.fullName || item.name || 'Unknown';
+            deleteName.textContent = escapeHtml(name);
+            deleteModal.classList.add('active');
+            modalConfirm.disabled = false;
+            modalConfirm.innerHTML = '<i class="fas fa-trash-can"></i> Delete';
+        }
+
+        function closeDeleteModal() {
+            deleteModal.classList.remove('active');
+            deleteTargetId = null;
+        }
+
+        async function confirmDelete() {
+            if (isProcessing || !deleteTargetId) return;
+            isProcessing = true;
+            modalConfirm.disabled = true;
+            modalConfirm.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Deleting…';
+
+            try {
+                const res = await fetch(`/api/submissions/${deleteTargetId}`, {
+                    method: 'DELETE'
+                });
+
+                if (!res.ok) {
+                    const errData = await res.json().catch(() => ({}));
+                    throw new Error(errData.message || 'Failed to delete');
+                }
+
+                showToast('🗑️ Submission deleted successfully', 'warning');
+                closeDeleteModal();
+                await fetchSubmissions();
+
+            } catch (err) {
+                showToast(`❌ ${err.message}`, 'error');
+                modalConfirm.disabled = false;
+                modalConfirm.innerHTML = '<i class="fas fa-trash-can"></i> Delete';
+            } finally {
+                isProcessing = false;
+            }
+        }
+
+        // ── Modal events ──
+        modalCancel.addEventListener('click', closeDeleteModal);
+        modalConfirm.addEventListener('click', confirmDelete);
+        deleteModal.addEventListener('click', (e) => {
+            if (e.target === deleteModal) closeDeleteModal();
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeDeleteModal();
         });
 
-        // Load on page load
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        //  REFRESH
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        refreshBtn.addEventListener('click', () => {
+            fetchSubmissions();
+            showToast('🔄 Refreshed', 'success');
+        });
+
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        //  BOOT
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         fetchSubmissions();
     </script>
 </body>
