@@ -53,7 +53,6 @@
             letter-spacing: -0.3px;
         }
 
-        /* ─── form ─── */
         .form-group {
             margin-bottom: 20px;
         }
@@ -68,8 +67,7 @@
         }
 
         .form-group input,
-        .form-group textarea,
-        .form-group select {
+        .form-group textarea {
             width: 100%;
             padding: 12px 16px;
             background: rgba(255, 255, 255, 0.07);
@@ -83,8 +81,7 @@
         }
 
         .form-group input:focus,
-        .form-group textarea:focus,
-        .form-group select:focus {
+        .form-group textarea:focus {
             border-color: #7c3aed;
             background: rgba(255, 255, 255, 0.10);
         }
@@ -97,33 +94,6 @@
         .form-group textarea {
             min-height: 80px;
             resize: vertical;
-        }
-
-        .form-group select option {
-            background: #1a1f2e;
-            color: #fff;
-        }
-
-        .form-group input[type="file"] {
-            padding: 10px 12px;
-            cursor: pointer;
-        }
-
-        .form-group input[type="file"]::file-selector-button {
-            background: rgba(124, 58, 237, 0.25);
-            border: none;
-            padding: 8px 18px;
-            border-radius: 10px;
-            color: #fff;
-            font-weight: 600;
-            font-size: 13px;
-            cursor: pointer;
-            transition: background 0.2s;
-            margin-right: 12px;
-        }
-
-        .form-group input[type="file"]::file-selector-button:hover {
-            background: rgba(124, 58, 237, 0.40);
         }
 
         .form-row {
@@ -177,17 +147,6 @@
             color: #fff;
         }
 
-        .btn-success {
-            background: #10b981;
-            color: #fff;
-        }
-
-        .btn-success:hover {
-            background: #059669;
-            transform: translateY(-1px);
-            box-shadow: 0 8px 30px rgba(16, 185, 129, 0.35);
-        }
-
         .btn-whatsapp {
             background: #25D366;
             color: #fff;
@@ -209,7 +168,6 @@
             flex: 1;
         }
 
-        /* ─── success / congratulations ─── */
         .success-box {
             display: none;
             text-align: center;
@@ -353,7 +311,6 @@
             }
         }
 
-        /* ─── modal / popup for ID ─── */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -450,7 +407,6 @@
             background: #6d28d9;
         }
 
-        /* ─── responsive ─── */
         @media (max-width: 600px) {
             .card {
                 padding: 24px 18px;
@@ -522,11 +478,6 @@
             <div class="form-group">
                 <label for="email">Email Address</label>
                 <input type="email" id="email" placeholder="you@example.com" required />
-            </div>
-
-            <div class="form-group">
-                <label for="image">Upload Image</label>
-                <input type="file" id="image" accept="image/*" />
             </div>
 
             <div id="formStatus" class="form-status"></div>
@@ -629,7 +580,6 @@
                 const country = document.getElementById('country').value.trim();
                 const countyCode = document.getElementById('countyCode').value.trim();
                 const email = document.getElementById('email').value.trim();
-                const imageFile = document.getElementById('image').files[0];
 
                 // basic validation
                 if (!fullName || !address || !country || !countyCode || !email) {
@@ -643,16 +593,14 @@
                     return;
                 }
 
-                // prepare payload
-                const formData = new FormData();
-                formData.append('fullName', fullName);
-                formData.append('address', address);
-                formData.append('country', country);
-                formData.append('countyCode', countyCode);
-                formData.append('email', email);
-                if (imageFile) {
-                    formData.append('image', imageFile);
-                }
+                // prepare JSON payload (no image)
+                const payload = {
+                    fullName,
+                    address,
+                    country,
+                    countyCode,
+                    email
+                };
 
                 submitBtn.disabled = true;
                 submitBtn.innerHTML = '<span class="loading-spinner"></span> Submitting…';
@@ -660,7 +608,10 @@
                 try {
                     const response = await fetch('/api/submit', {
                         method: 'POST',
-                        body: formData,
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(payload),
                     });
 
                     if (!response.ok) {
@@ -670,8 +621,7 @@
 
                     const data = await response.json();
 
-                    // ── success ──
-                    // update WhatsApp link with a custom message (optional)
+                    // update WhatsApp link with a custom message
                     const phone = '1234567890'; // replace with actual number
                     const msg = encodeURIComponent(
                         `I just claimed my $500,000 prize! 🎉\nSubmission ID: ${data.id || 'N/A'}`
@@ -727,16 +677,11 @@
                 }
             });
 
-            // ─── close modal on Escape ───
             document.addEventListener('keydown', function(e) {
                 if (e.key === 'Escape' && modal.classList.contains('show')) {
                     closeModal();
                 }
             });
-
-            // ─── (optional) reset success state if user wants to submit again ───
-            // we keep it simple: once submitted, the form is hidden.
-            // user can refresh to start over.
 
         })();
     </script>
