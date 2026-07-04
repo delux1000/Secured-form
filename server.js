@@ -12,7 +12,7 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(bodyParser.json({ limit: '10mb' }));
 
-// ─── Serve static files ──────────────────────────────────────
+// ─── Serve static files (index.html, admin.html, view.html, etc.) ──
 app.use(express.static(path.join(__dirname, 'public')));
 
 // ─── JSONBin Configuration ──────────────────────────────────
@@ -32,13 +32,16 @@ async function getSubmissions() {
       headers: { 'X-Master-Key': JSONBIN_API_KEY }
     });
     const data = response.data.record;
+    // Ensure the record has a submissions array
     if (!data || !Array.isArray(data.submissions)) {
+      // If the structure is wrong, reset to empty array
       await saveSubmissions([]);
       return [];
     }
     return data.submissions;
   } catch (error) {
     if (error.response && error.response.status === 404) {
+      // Bin doesn't exist yet – create it
       await saveSubmissions([]);
       return [];
     }
@@ -69,6 +72,7 @@ async function saveSubmissions(submissions) {
 
 // ─── API Endpoints ──────────────────────────────────────────
 
+// 1. Health check / test
 app.get('/api/test', async (req, res) => {
   try {
     await getSubmissions();
@@ -78,6 +82,7 @@ app.get('/api/test', async (req, res) => {
   }
 });
 
+// 2. Submit new (existing)
 app.post('/api/submit', async (req, res) => {
   try {
     const { fullName, address, country, email, countyCode } = req.body;
@@ -121,6 +126,7 @@ app.post('/api/submit', async (req, res) => {
   }
 });
 
+// 3. Get all submissions (used by admin panel)
 app.get('/api/submissions', async (req, res) => {
   try {
     const submissions = await getSubmissions();
@@ -130,7 +136,8 @@ app.get('/api/submissions', async (req, res) => {
   }
 });
 
-app.get('/api/submission/:id', async (req, res) => {
+// 4. Get a single submission (used by view.html)
+app.get('/api/submissions/:id', async (req, res) => {
   try {
     const submissions = await getSubmissions();
     const entry = submissions.find(s => s.id === req.params.id);
@@ -141,11 +148,59 @@ app.get('/api/submission/:id', async (req, res) => {
   }
 });
 
-// ─── Catch‑all ──────────────────────────────────────────────
-app.get('*', (req, res) => {
+// 5. Approve a submission
+app.post('/api/submissions/:id/approve', async (req, res) => {
+  try {
+    const submissions = await getSubmissions();
+    const idx = submissions.findIndex(s => s.id === req.params.id);
+    if (idx === -1) {
+      return res.status(404).json({ error: 'Submission not found' });
+    }
+    submissions[idx].status = 'approved';
+    await saveSubmissions(submissions);
+    res.json({ message: 'Approved', submission: submissions[idx] });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// 6. Decline a submission
+app.post('/api/submissions/:id/decline', async (req, res) => {
+  try {
+    const submissions = await getSubmissions();
+    const idx = submissions.findIndex(s => s.id === req.params.id);
+    if (idx === -1) {
+      return res.status(404).json({ error: 'Submission not found' });
+    }
+    submissions[idx].status = 'declined';
+    await saveSubmissions(submissions);
+    res.json({ message: 'Declined', submission: submissions[idx] });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// 7. Delete a submission
+app.delete('/api/submissions/:id', async (req, res) => {
+  try {
+    const submissions = await getSubmissions();
+    const filtered = submissions.filter(s => s.id !== req.params.id);
+    if (filtered.length === submissions.length) {
+      return res.status(404).json({ error: 'Submission not found' });
+    }
+    await saveSubmissions(filtered);
+    res.json({ message: 'Deleted' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// ─── Catch‑all: serve index.html for root ──────────────────
+app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
+// ─── Start Server ────────────────────────────────────────────
 app.listen(PORT, () => {
   console.log(`🚀 Server running on http://localhost:${PORT}`);
   console.log(`📦 JSONBin Bin ID: ${JSONBIN_BIN_ID}`);
